@@ -35,3 +35,30 @@ set -g theme_color_scheme dark
 bass source $HOME/.virtualenvs/3.10.2/bin/activate
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+
+# kubernetes
+function ke -d "ke POD_NAME -s SHELL"
+  argparse -N 1 -X 1 "s/shell=" -- $argv
+  or return 1
+  set -lq _flag_shell
+  or set -l _flag_shell "xonsh"
+  kubectl exec -it $argv[1] -- $_flag_shell
+end
+alias kgp="kubectl get pod"
+alias kgp="kubectl get pod"
+alias kgj="kubectl get job"
+alias kdja="kubectl delete job --all"
+function kdp -d "kdp POD_NAME"
+  if test (count $argv) -ne 1
+    echo "usage: kdp POD_NAME"
+    return 1
+  end
+  kubectl delete pod $argv[1]
+end
+function kl -d "kl POD_OR_JOB_NAME"
+  if test (count $argv) -ne 1
+    echo "usage: kl POD_OR_JOB_NAME"
+    return 1
+  end
+  kubectl logs $argv[1]
+end
