@@ -1,0 +1,398 @@
+import argparse
+from pathlib import Path
+
+from prompt_toolkit.keys import Keys
+
+from operator import itemgetter
+
+try:
+    from secret import *
+except:
+    pass
+
+
+# $COMPLETIONS_CONFIRM = True
+$COMPLETIONS_CONFIRM = False
+$CASE_SENSITIVE_COMPLETIONS = False
+$AUTO_CD = True
+$UPDATE_COMPLETIONS_ON_KEYPRESS = True
+# $AUTO_SUGGEST_IN_COMPLETIONS = True
+$COMPLETION_IN_THREAD = False  # True にすると高速で ls とかしたときにエラーがでるので…
+$XONSH_HISTORY_BACKEND = "sqlite"
+$XONSH_HISTORY_SIZE = (65536, "commands")  # default は 8128 だけ
+
+#$BROWSER = "chromium"
+$BROWSER = "google-chrome-stable"
+$EDITOR = "/usr/bin/nvim"
+$VISUAL = "/usr/bin/nvim"
+$HISTCONTROL = "ignoredups"
+$XONSH_SHOW_TRACEBACK = True
+$SUPPRESS_BRANCH_TIMEOUT_MESSAGE = True
+#$UPDATE_COMPLETIONS_ON_KEYPRESS = False
+#$PROMPT = "{INTENSE_RED}{user}{INTENSE_GREEN}@{INTENSE_BLUE}{hostname}{INTENSE_YELLOW} [ {cwd} ] {GREEN}$ "
+#$PROMPT = "\n{CYAN}{env_name}{CYAN}{short_cwd}{branch_color}{curr_branch:|{}}{PURPLE} ❯ "
+$PROMPT = "\n{YELLOW}{env_name}{CYAN}{short_cwd}{branch_color}{curr_branch:|{}}{PURPLE} ❯ "
+$LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30"
+#source-bash ~/env/env3/bin/activate --overwrite-alias
+$XONSH_AUTOPAIR = True
+$XONSH_SHOW_TRACEBACK = True
+$INDENT = "    "
+#$XONSH_COLOR_STYLE = "native"
+$XONSH_COLOR_STYLE = "default"
+
+$COLOR_INPUT = True
+
+aliases['ll'] = 'ls -ltr'
+aliases['la'] = 'ls -altr'
+aliases['l'] = 'ls -l'
+
+
+@events.on_chdir
+def auto_ls(olddir, newdir) -> None:
+    ls
+
+# @events.on_chdir
+# def inherit_virtual_env(olddir, newdir) -> None:
+#     virtual_env = __xonsh__.env.get("VIRTUAL_ENV")
+#     print("load")
+#     print(virtual_env)
+#     if virtual_env is not None:
+#         print(virtual_env)
+#         print("found")
+#         $VIRTUAL_ENV = virtual_env
+
+# Define some useful functions
+$IS_SSH_AGENT = False
+def _ssh_agent():
+    ssh_agent_strings = $(ssh-agent)
+    print(ssh_agent_strings)
+    ssh_agent_strings = ssh_agent_strings.split('\n')
+    $SSH_AUTH_SOCK = ssh_agent_strings[0].split('=')[1].split(';')[0]
+    $SSH_AGENT_PID = ssh_agent_strings[1].split('=')[1].split(';')[0]
+    echo Agent pid $SSH_AGENT_PID
+    ssh-add ~/.ssh/id_ed25519
+    if 'ssh-agent' not in $PROMPT:
+        $PROMPT = '\n{CYAN}[ssh-agent] ' + $PROMPT[1:]
+    $IS_SSH_AGENT = True
+aliases['ssh_agent'] = _ssh_agent
+
+
+def kill_ssh_agent():
+    jobs = $(ps -ef | grep ssh-agent | awk '{print $2}')
+    jobs = jobs.strip()
+    jobs = jobs.split('\n')
+    print(jobs)
+    kill @(jobs)
+
+
+@events.on_ptk_create
+def custom_keybindings(bindings, **kw):
+    handler = bindings.add
+
+    @handler(Keys.ControlG)
+    def __ghqpeco(event):
+        _ghqpeco()
+
+    @handler(Keys.ControlO)
+    def __ranger_cd(event):
+        _ranger_cd(None)
+
+    @handler(Keys.ControlR)
+    def __history(event):
+        _history(event)
+
+    @handler(Keys.ControlK)
+    def select_suggestion_word(event):
+        if event.current_buffer.suggestion:
+            suggest_text = event.current_buffer.suggestion.text
+            try:
+                input_text = suggest_text.split()[0]
+            except:
+                return
+            txt = event.current_buffer.text
+            idx = len(txt) - 1  # 何故かこのように冗長に書かないと落ちるようになった
+            if suggest_text[0] == " " and txt[idx] != " ":
+                input_text = " " + input_text
+            event.current_buffer.insert_text(input_text)
+
+    @handler(Keys.ControlU)
+    def __delete_line(event):
+        event.current_buffer.reset()
+
+def _ghqpeco():
+    # 必要になったらLBUFFERを定義
+    $LBUFFER = ""
+    selected_dir = $(ghq list -p | peco --query "$LBUFFER").strip()
+    if selected_dir != "":
+        cd @(selected_dir)
+aliases['ghqpeco'] = _ghqpeco
+
+
+# test
+# 文字入力がまだできないのと、遅い
+def _history(event):
+    HISTSIZE = 1000
+    #print(event.current_buffer.text)
+    $LBUFFER = event.current_buffer.text
+
+    hist_list = []
+    hist_set = set()
+    for hist in __xonsh__.history.all_items(newest_first=True):
+        if hist["inp"] not in hist_set:
+            hist_set.add(hist["inp"])
+            hist_list.append((hist["inp"], hist["ts"]))
+        if len(hist_list) >= HISTSIZE:
+            break
+    hist_list.sort(key=itemgetter(1), reverse=True)
+    hists = map(itemgetter(0), hist_list)
+
+    #hists = [hist["inp"] for hist in list(__xonsh__.history.all_items(newest_first=True))[:HISTSIZE]]
+    #hists = []
+    #i = 0
+    #for hist in __xonsh__.history.all_items():
+    #    i += 1
+    #    if i > HISTSIZE:
+    #        break
+    #    hists.append(hist['inp'])
+    #print(hists)
+    choice = $(echo @('\n'.join(hists)) | peco --query "$LBUFFER").strip()
+    event.current_buffer.delete_before_cursor(len($LBUFFER))
+    event.current_buffer.insert_text(choice)
+    #event.current_buffer.text = choice
+    #event.current_buffer.cursor_position = len(choice)
+
+
+#xrdb -merge $HOME/.Xresources
+
+xontrib load vox
+$PYENV_ROOT= $HOME + "/.pyenv"
+$PATH.insert(0, $PYENV_ROOT + "/bin")
+source-bash $(pyenv init -) 2> /dev/null
+#xontrib load xonsh-apipenv
+#$APIPENV = True
+##echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
+
+### kubectl begin ###
+def _ke(args):
+    parser = argparse.ArgumentParser(description='kubectl exec')
+    parser.add_argument('pod_name', type=str)
+    parser.add_argument('-s', '--shell', type=str, default='xonsh')
+    args = parser.parse_args(args)
+    kubectl exec -it @(args.pod_name) -- @(args.shell)
+aliases['ke'] = _ke
+
+aliases['kgp'] = 'kubectl get pod'
+aliases['wkgp'] = 'watch kubectl get pod'
+aliases['kgj'] = 'kubectl get job'
+aliases['kdja'] = 'kubectl delete job --all'
+
+def _kdp(args):
+    parser = argparse.ArgumentParser(description='kubectl describe pod')
+    parser.add_argument('pod_name', type=str)
+    args = parser.parse_args(args)
+    kubectl describe pod @(args.pod_name)
+aliases['kdp'] = _kdp
+
+def _kdj(args):
+    parser = argparse.ArgumentParser(description='kubectl delete job')
+    parser.add_argument('job_name', type=str)
+    args = parser.parse_args(args)
+    kubectl delete job @(args.job_name)
+aliases['kdj'] = _kdj
+
+def _kl(args):
+    parser = argparse.ArgumentParser(description='kubectl logs')
+    parser.add_argument('job_name', type=str)
+    args = parser.parse_args(args)
+    kubectl logs @(args.job_name)
+aliases['kl'] = _kl
+### kubectl end ###
+
+# 全てのdocker containerを消去
+#docker rm @($(docker ps -a | awk '{print $1}').split()[1:])
+
+def _ranger_cd(args):
+    parser = argparse.ArgumentParser(description='ranger-cd')
+    parser.add_argument('--dir-name', type=str, default=None)
+    args = parser.parse_args(args)
+    dir_name = args.dir_name if args.dir_name is not None else $(pwd).strip()
+    temp_file = $(mktemp -t tmp.XXXXXX).strip()
+    ranger --choosedir=@(temp_file) @(dir_name)
+    temp_file = Path(temp_file).resolve()
+    current_path = $(cat @(temp_file)).strip()
+    prev_path = $(pwd).strip()
+    if temp_file.exists() and current_path != prev_path:
+        cd @(current_path)
+    rm -f @(temp_file)
+
+aliases['r'] = _ranger_cd
+
+#"""
+#Poetry (かきかけ)
+#"""
+#import os
+#
+#
+#class PoetryEnvActivator():
+#    def __init__(self):
+#        self.proj_path = None
+#        self._activate()
+#
+#    def _activate(self, adir=None):
+#
+#        if adir is None:
+#            adir = $PWD
+#
+#        adir = Path(adir)
+#
+#        if 'VIRTUAL_ENV' in ${...}:
+#
+#            if (
+#                self.proj_path and
+#                self.proj_path == adir or
+#                self.proj_path in adir.parents
+#            ):
+#                return
+#            else:
+#                $(vox deactivate)
+#                self.proj_path = None
+#
+#        project = Project(chdir=False)
+#
+#        exists = project.virtualenv_exists
+#
+#        if not exists:
+#            return
+#
+#        venv_path = project.virtualenv_location
+#
+#        venv_root, venv_name = os.path.split(venv_path)
+#
+#        with ${...}.swap(VIRTUALENV_HOME=venv_root):
+#
+#            self.proj_path = Path(project.pipfile_location).parent
+#
+#            vox activate @(venv_name)
+#
+#
+#_pa = PoetryEnvActivator()
+#aliases['activate_poetry_env'] = lambda: _pa._activate()
+
+
+#@events.on_chdir
+#def _apipenv(olddir, newdir, **kw):
+#    if 'AUTO_POETRY_ENV' in ${...} and $AUTO_POETRY_ENV:
+#        _pa._activate(newdir)
+
+
+def _activate_poetry():
+    if not Path("pyproject.toml").exists():
+        print("Not found pyproject.toml")
+        return
+    if len($(poetry env list).strip()) == 0:
+        return
+    poetry_env_list = $(poetry env list)
+    if "ValueError" in poetry_env_list:
+        print(poetry_env_list)
+        return
+    env_names = poetry_env_list.strip().split("\n")
+    if len(env_names) == 0:
+        return
+    elif len(env_names) == 1:
+        env_name = env_names[0].split()[0]
+    else:
+        print("Choose which environment to use:")
+        while True:
+            for i, env_name in enumerate(env_names):
+                print(f"{i}: {env_name}")
+            choice = input(">> ")
+            try:
+                choice = int(choice)
+                env_name = env_names[choice]
+                break
+            except:
+                continue
+    vox activate $HOME/.cache/pypoetry/virtualenvs/@(env_name)
+aliases["activate_poetry"] = _activate_poetry
+
+
+# def _activate_poetry():
+#     env_info_str = $(poetry env info).strip()
+#     if "Path" not in env_info_str or "Valid" not in env_info_str:
+#         print("Please use `activate_poetry`")
+#         return
+#     env_info_str = env_info_str.split("Path:")[1].split("Valid")[0].strip()
+#     vox activate @(env_info_str)
+# aliases["activate_poetry"] = _activate_poetry
+
+
+class PoetryActivator():
+    def __init__(self):
+        self.current_pyproject_path = None
+
+    def activate(self):
+        if not $AUTO_ACTIVATE_POETRY:
+            return
+        if not Path("pyproject.toml").exists():
+            return
+        new_pyproject_path = Path("pyproject.toml").resolve()
+        if self.current_pyproject_path is None or new_pyproject_path != self.current_pyproject_path:
+            self.current_pyproject_path = new_pyproject_path
+            _activate_poetry()
+
+poetry_activator = PoetryActivator()
+
+@events.on_chdir
+def auto_activate_poetry(olddir, newdir) -> None:
+    poetry_activator.activate()
+
+$AUTO_ACTIVATE_POETRY = False
+
+
+
+# $DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock"
+$DOCKER_HOST = "unix:///run/user/1000/docker.sock"
+$PATH.insert(0, "/home/y011d4/bin")
+
+
+$ANDROID_SDK = "/home/y011d4/Android/Sdk"
+$PATH.append(f"{$ANDROID_SDK}/platform-tools")
+
+$CHROME_EXECUTABLE = "google-chrome-stable"
+
+# The next line updates PATH for the Google Cloud SDK.
+if Path('/home/y011d4/work/env/google-cloud-sdk/path.bash.inc').exists():
+    source-bash '/home/y011d4/work/env/google-cloud-sdk/path.bash.inc' 2>/dev/null
+# The next line enables shell command completion for gcloud.
+if Path('/home/y011d4/work/env/google-cloud-sdk/completion.bash.inc').exists():
+    source-bash '/home/y011d4/work/env/google-cloud-sdk/completion.bash.inc' 2>/dev/null
+
+
+$JAVA_HOME = "/usr/lib/jvm/java-8-openjdk"
+$PATH.insert(0, f"{$JAVA_HOME}/bin")
+$PATH.insert(0, f"{$HOME}/.poetry/bin")
+
+for i in range(2, 10):
+    cmd = ".." + str(i)
+    aliases[cmd] = "cd " + "../" * i
+
+source-bash $HOME/.cargo/env 2>/dev/null
+
+$PATH.insert(0, f"{$HOME}/go/bin")
+# $PATH.insert(0, f"{$HOME}/tools/flutter/bin")
+$PATH.insert(0, f"{$HOME}/tools/asdf-0.10.2/bin")
+$PATH.insert(0, f"{$HOME}/.asdf/shims")
+$PATH.insert(0, f"{$HOME}/.gem/ruby/3.0.0/bin")
+$PATH.insert(0, "/home/y011d4/.local/share/solana/install/active_release/bin")
+
+# $PATH.insert(0, f"{$HOME}/.rustup/toolchains/nightly-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/")
+#
+# source-bash /usr/share/nvm/init-nvm.sh
+
+# NOTE: path はこれより前に設定すること
+# vox activate ~/.cache/pypoetry/virtualenvs/python3-env-tCB1VNE7-py3.9/
+# vox activate /home/y011d4/.cache/pypoetry/virtualenvs/python3-env-tCB1VNE7-py3.10
+vox activate 3.10.2
+
+
+aliases["dotfiles"] = "git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
