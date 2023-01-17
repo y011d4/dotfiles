@@ -23,4 +23,6 @@ end
 
 set -g theme_color_scheme dark
 
+bass source $HOME/.virtualenvs/3.10.2/bin/activate
+
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
