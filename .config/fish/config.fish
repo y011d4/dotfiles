@@ -15,6 +15,7 @@ function __ghqpeco -d "List git repositories"
 end
 bind \cg '__ghqpeco'
 
+# https://blog.matzryo.com/entry/2018/09/02/cd-then-ls-with-fish-shell
 functions --copy cd original_cd
 function cd
   original_cd $argv; and ls
