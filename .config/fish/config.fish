@@ -10,6 +10,7 @@ set -gx HISTCONTROL "ignoredups"
 set -gx PROMPT "\n{YELLOW}{env_name}{CYAN}{short_cwd}{branch_color}{curr_branch:|{}}{PURPLE} ❯ "
 set -gx LS_COLORS "di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30"
 set -gx INDENT "    "
+set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 
 set -U FZF_LEGACY_KEYBINDINGS 0
 
@@ -32,7 +33,7 @@ end
 
 set -g theme_color_scheme dark
 
-bass source $HOME/.virtualenvs/3.10.2/bin/activate
+source $HOME/.virtualenvs/3.10.2/bin/activate.fish
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
@@ -62,3 +63,7 @@ function kl -d "kl POD_OR_JOB_NAME"
   end
   kubectl logs $argv[1]
 end
+
+
+set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
+fish_add_path $HOME/bin
