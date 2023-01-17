@@ -6,3 +6,10 @@ alias dotfiles='git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME'
 dotfiles config status.showuntrackedfiles no
 dotfiles checkout
 ```
+
+## enabling tig
+
+```bash
+dotfiles config alias.tig '!tig'
+dotfiles tig
+```

@@ -1,0 +1,7 @@
+# vim-like g
+# もともとある view-grep は別のキーへ
+bind generic g move-first-line
+bind generic <esc>g view-grep
+# vim-like G
+bind generic G move-last-line
+bind main    G move-last-line
