@@ -69,3 +69,5 @@ end
 
 set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
+
+eval "$(pyenv init -)"
