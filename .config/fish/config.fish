@@ -33,7 +33,9 @@ end
 
 set -g theme_color_scheme dark
 
-source $HOME/.virtualenvs/3.10.2/bin/activate.fish
+if test -e $HOME/.virtualenvs/3.10.2/bin/activate.fish
+  source $HOME/.virtualenvs/3.10.2/bin/activate.fish
+end
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
@@ -42,7 +44,7 @@ function ke -d "ke POD_NAME -s SHELL"
   argparse -N 1 -X 1 "s/shell=" -- $argv
   or return 1
   set -lq _flag_shell
-  or set -l _flag_shell "xonsh"
+  or set -l _flag_shell "fish"
   kubectl exec -it $argv[1] -- $_flag_shell
 end
 alias kgp="kubectl get pod"
