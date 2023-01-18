@@ -33,8 +33,8 @@ end
 
 set -g theme_color_scheme dark
 
-if test -e $HOME/.virtualenvs/3.10.2/bin/activate.fish
-  source $HOME/.virtualenvs/3.10.2/bin/activate.fish
+if test -e $HOME/.virtualenvs/3.10.9/bin/activate.fish
+  source $HOME/.virtualenvs/3.10.9/bin/activate.fish
 end
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
