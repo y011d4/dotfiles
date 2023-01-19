@@ -28,11 +28,12 @@ require("lazy").setup({
   -- 構文解析に使う
   {
     'nvim-treesitter/nvim-treesitter',
+    build = ":TSUpdate",
     lazy = true,
     event = "VeryLazy",
-    setup = function()
+    -- priority = 1,
+    config = function()
       require("treesitter-setting")
-      -- vim.cmd(":TSUpdate")
     end
   },
   -- 現在のカーソル位置の関数を1行目に表示してくれる
@@ -168,7 +169,7 @@ require("lazy").setup({
       "petertriho/nvim-scrollbar",
     },
     lazy = true,
-    keys = { "/", "*", "n", "N" },
+    keys = { "/", "*" },
     config = function()
       require('nvim-hlslens-setting')
     end
@@ -229,7 +230,7 @@ require("lazy").setup({
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
-    setup = function()
+    config = function()
       require "telescope".load_extension("frecency")
     end,
     lazy = true,
@@ -274,6 +275,9 @@ require("lazy").setup({
   -- コメントを tsx とかでも賢くやってくれる
   {
     'JoosepAlviste/nvim-ts-context-commentstring',
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
     lazy = true,
     ft = { "tsx", "jsx" },
     config = function()
