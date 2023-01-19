@@ -1,4 +1,3 @@
-lua <<EOF
 -- https://blog.atusy.net/2022/12/16/impatient-nvim/
 -- impatient.nvimのクローン先をruntimepathに追加し、`require`で読めるようにする
 -- vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site/pack/jetpack/src/github.com/lewis6991/impatient.nvim')
@@ -11,9 +10,7 @@ else
   -- vim.notify(tostring(ok), vim.log.levels.ERROR)
   vim.notify("cache is not loaded", vim.log.levels.ERROR)
 end
-EOF
 
-lua <<EOF
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -26,33 +23,31 @@ if not vim.loop.fs_stat(lazypath) then
   })
 end
 vim.opt.rtp:prepend(lazypath)
-EOF
 
-"let g:did_install_default_menus = 1
-"let g:did_install_syntax_menu   = 1
-"let g:did_indent_on             = 1
-"let g:did_load_filetypes        = 1
-"let g:did_load_ftplugin         = 0
-"let g:loaded_2html_plugin       = 1
-"let g:loaded_gzip               = 1
-"let g:loaded_man                = 1
-"let g:loaded_matchit            = 1
-"let g:loaded_matchparen         = 1
-"let g:loaded_netrwPlugin        = 1
-"let g:loaded_remote_plugins     = 1
-"let g:loaded_shada_plugin       = 1
-"let g:loaded_spellfile_plugin   = 1
-"let g:loaded_tarPlugin          = 1
-"let g:loaded_tutor_mode_plugin  = 1
-"let g:loaded_zipPlugin          = 1
-"let g:skip_loading_mswin        = 1
+-- let g:did_install_default_menus = 1
+-- let g:did_install_syntax_menu   = 1
+-- let g:did_indent_on             = 1
+-- let g:did_load_filetypes        = 1
+-- let g:did_load_ftplugin         = 0
+-- let g:loaded_2html_plugin       = 1
+-- let g:loaded_gzip               = 1
+-- let g:loaded_man                = 1
+-- let g:loaded_matchit            = 1
+-- let g:loaded_matchparen         = 1
+-- let g:loaded_netrwPlugin        = 1
+-- let g:loaded_remote_plugins     = 1
+-- let g:loaded_shada_plugin       = 1
+-- let g:loaded_spellfile_plugin   = 1
+-- let g:loaded_tarPlugin          = 1
+-- let g:loaded_tutor_mode_plugin  = 1
+-- let g:loaded_zipPlugin          = 1
+-- let g:skip_loading_mswin        = 1
 
 
-lua require('plugins')
-"lua require('coc')
-lua require('keymap')
+require('plugins')
+-- require('coc')
+require('keymap')
 
-lua <<EOF
 local options = {
     clipboard = "unnamedplus",
     --set clipboard=unnamedplus,autoselect "クリップボード
@@ -110,5 +105,3 @@ set cursorcolumn
 let g:python3_host_prog = '/usr/bin/python'
 let g:python_host_prog = '/home/y011d4/.virtualenvs/python2-env/bin/python'
 ]]
-
-EOF
