@@ -327,9 +327,9 @@ colors:
     magenta: '0xc8a5ff'
     cyan:    '0x52bdff'
     white:   '0xe4e4e5'
-  indexed_colors:
-    - { index: 16, color: '0x3ddbd9' }
-    - { index: 17, color: '0xff7eb6' }
+  # indexed_colors:
+  #   - { index: 16, color: '0x3ddbd9' }
+  #   - { index: 17, color: '0xff7eb6' }
 
   # Dim colors
   #
