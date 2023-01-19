@@ -242,6 +242,12 @@ require("lazy").setup({
   {
     'neovim/nvim-lspconfig',
     lazy = false,
+    dependencies = {
+      { "folke/neodev.nvim", config = true },
+      "y011d4/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+    },
     config = function()
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
@@ -462,5 +468,12 @@ require("lazy").setup({
   'dstein64/vim-startuptime',
   {
     'folke/neodev.nvim',
-  }
+  },
+  {
+    "jay-babu/mason-null-ls.nvim",
+    dependencies = {
+      'y011d4/mason.nvim',
+      'y011d4/null-ls.nvim',
+    }
+  },
 })
