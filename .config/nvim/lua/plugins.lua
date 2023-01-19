@@ -1,8 +1,10 @@
-vim.cmd('packadd vim-jetpack')
+vim.g.mapleader = " " -- make sure to set `mapleader` before lazy so your mappings are correct
+
+-- vim.cmd('packadd vim-jetpack')
 -- vim.g["jetpack_copy_method"] = "copy"
-require('jetpack.packer').add {
+require("lazy").setup({
   -- package manager
-  { 'tani/vim-jetpack', opt = true }, -- bootstrap
+  -- { 'tani/vim-jetpack', opt = true }, -- bootstrap
   --'scrooloose/nerdtree',
   -- {'neoclide/coc.nvim', run = 'yarn install --frozen-lockfile', branch = 'main'},
   --[[
@@ -35,7 +37,8 @@ require('jetpack.packer').add {
   -- colorscheme
   {
     'EdenEast/nightfox.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       vim.cmd("colorscheme carbonfox")
     end
   },
@@ -50,7 +53,8 @@ require('jetpack.packer').add {
   'nvim-tree/nvim-web-devicons',
   {
     'nvim-lualine/lualine.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require('lualine-setting')
     end,
   },
@@ -67,7 +71,8 @@ require('jetpack.packer').add {
   -- カーソル下の単語全てに同じ色をつけてくれる
   {
     't9md/vim-quickhl',
-    setup = function()
+    lazy = false,
+    config = function()
       -- nmap <Space>m <Plug>(quickhl-manual-this)
       -- xmap <Space>m <Plug>(quickhl-manual-this)
       -- nmap <Space>M <Plug>(quickhl-manual-reset)
@@ -96,7 +101,8 @@ require('jetpack.packer').add {
     requires = {
       'folke/tokyonight.nvim',
     },
-    setup = function()
+    lazy = false,
+    config = function()
       require("scrollbar").setup({})
       -- local colors = require("tokyonight.colors").setup()
       -- require("scrollbar").setup({
@@ -120,7 +126,8 @@ require('jetpack.packer').add {
     requires = {
       "petertriho/nvim-scrollbar",
     },
-    setup = function()
+    lazy = false,
+    config = function()
       require('nvim-hlslens-setting')
     end
   },
@@ -128,7 +135,8 @@ require('jetpack.packer').add {
   {
     'phaazon/hop.nvim',
     branch = 'v2', -- optional but strongly recommended
-    setup = function()
+    lazy = false,
+    config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
       require('hop-setting')
@@ -147,7 +155,8 @@ require('jetpack.packer').add {
     requires = {
       'nvim-lua/plenary.nvim',
     },
-    setup = function()
+    lazy = false,
+    config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
@@ -163,7 +172,8 @@ require('jetpack.packer').add {
       'kkharji/sqlite.lua',
       'nvim-telescope/telescope.nvim',
     },
-    setup = function()
+    lazy = false,
+    config = function()
       require('neoclip').setup()
       vim.keymap.set('n', '<leader>fy', ':Telescope neoclip a<cr>')
     end,
@@ -178,7 +188,8 @@ require('jetpack.packer').add {
   -- * の検索の動作をよくする
   {
     'haya14busa/vim-asterisk',
-    setup = function()
+    lazy = false,
+    config = function()
       vim.keymap.set('', '*', '<Plug>(asterisk-*)')
       vim.keymap.set('', '#', '<Plug>(asterisk-#)')
       vim.keymap.set('', 'g*', '<Plug>(asterisk-g*)')
@@ -193,14 +204,16 @@ require('jetpack.packer').add {
   -- keybind のマニュアルを :Whichkey で表示。自分で書かないとだめ?
   {
     'folke/which-key.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require('which-key').setup()
     end
   },
   -- コメントを gcc (1行), gbc (ブロック) でやってくれる
   {
     'numToStr/Comment.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require('Comment').setup()
     end
   },
@@ -208,7 +221,8 @@ require('jetpack.packer').add {
   {
     'JoosepAlviste/nvim-ts-context-commentstring',
     run = ":TSUpdate",
-    setup = function()
+    lazy = false,
+    config = function()
       require 'nvim-treesitter.configs'.setup {
         context_commentstring = {
           enable = true
@@ -219,14 +233,16 @@ require('jetpack.packer').add {
   -- プログラミング言語特有のマッチもこなす (if, elif, else など) % でとべる
   {
     'andymass/vim-matchup',
-    setup = function()
+    lazy = false,
+    config = function()
       -- may set any options here
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
     end
   },
   {
     'neovim/nvim-lspconfig',
-    setup = function()
+    lazy = false,
+    config = function()
       -- Mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
       local opts = { noremap = true, silent = true }
@@ -246,7 +262,8 @@ require('jetpack.packer').add {
   -- mason でいれた LSP サーバー経由で設定
   {
     'williamboman/mason-lspconfig.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require("mason-lspconfig-setting")
     end,
     requires = {
@@ -261,7 +278,8 @@ require('jetpack.packer').add {
       'onsails/lspkind.nvim',
       "L3MON4D3/LuaSnip",
     },
-    setup = function()
+    lazy = false,
+    config = function()
       require("nvim-cmp-setting")
     end
   },
@@ -275,7 +293,8 @@ require('jetpack.packer').add {
   -- LSP の error を quickfix (?) に表示
   {
     'folke/trouble.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require("trouble").setup {}
       vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
         { silent = true, noremap = true }
@@ -312,7 +331,8 @@ require('jetpack.packer').add {
     -- opt = true,
     -- keys = { "\\" },
     -- cmd = "Neotree",
-    setup = function()
+    lazy = false,
+    config = function()
       require("neo-tree-setting")
     end,
   },
@@ -320,7 +340,8 @@ require('jetpack.packer').add {
   {
     'TimUntersberger/neogit',
     requires = 'nvim-lua/plenary.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       local neogit = require('neogit')
       neogit.setup {}
     end
@@ -337,7 +358,8 @@ require('jetpack.packer').add {
     "y011d4/null-ls.nvim",
     branch = "feature/add-pysen",
     dependencies = { "nvim-lua/plenary.nvim" },
-    setup = function()
+    lazy = false,
+    config = function()
       require("null-ls-setting")
     end
   },
@@ -347,7 +369,8 @@ require('jetpack.packer').add {
     requires = {
       "petertriho/nvim-scrollbar",
     },
-    setup = function()
+    lazy = false,
+    config = function()
       require("gitsigns").setup {}
       require("scrollbar.handlers.gitsigns").setup()
     end
@@ -357,7 +380,8 @@ require('jetpack.packer').add {
   -- snipet (lua 製)
   {
     "L3MON4D3/LuaSnip", tag = "v1.1.0",
-    setup = function()
+    lazy = false,
+    config = function()
       require("luasnip.loaders.from_lua").load()
     end
   },
@@ -366,14 +390,16 @@ require('jetpack.packer').add {
   {
     's1n7ax/nvim-window-picker',
     tag = 'v1.5',
-    setup = function()
+    lazy = false,
+    config = function()
       require 'window-picker'.setup()
     end,
   },
   -- 関数一覧を表示したり、関数間のジャンプをしたり
   {
     'stevearc/aerial.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require("aerial").setup({
         -- optionally use on_attach to set keymaps when aerial has attached to a buffer
         on_attach = function(bufnr)
@@ -389,7 +415,8 @@ require('jetpack.packer').add {
   -- 右下に LSP の状態を表示
   {
     'j-hui/fidget.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require "fidget".setup {}
     end
   },
@@ -397,7 +424,8 @@ require('jetpack.packer').add {
   {
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
-    setup = function()
+    lazy = false,
+    config = function()
       require("todo-comments").setup {
         -- your configuration comes here
         -- or leave it empty to use the default settings
@@ -408,23 +436,27 @@ require('jetpack.packer').add {
   -- 補完のときに引数のシグナチャを表示
   {
     'ray-x/lsp_signature.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       require "lsp_signature".setup {}
     end
   },
   -- notification を右上に表示
   {
     'rcarriga/nvim-notify',
-    setup = function()
+    lazy = false,
+    config = function()
       vim.notify = require("notify")
     end
   },
   -- nvim 読み込み時の cache を作り、起動を高速化する
   {
     'lewis6991/impatient.nvim',
-    setup = function()
+    lazy = false,
+    config = function()
       -- init.vim で呼んでいる
       -- require('impatient').enable_profile()
     end
   },
-}
+  'dstein64/vim-startuptime',
+})

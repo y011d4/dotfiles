@@ -1,7 +1,8 @@
 lua <<EOF
 -- https://blog.atusy.net/2022/12/16/impatient-nvim/
 -- impatient.nvimのクローン先をruntimepathに追加し、`require`で読めるようにする
-vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site/pack/jetpack/src/github.com/lewis6991/impatient.nvim')
+-- vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/site/pack/jetpack/src/github.com/lewis6991/impatient.nvim')
+vim.opt.runtimepath:append(vim.fn.stdpath('data') .. '/lazy/impatient.nvim')
 -- impatient.nvimが読み込める場合のみ最適化する
 local ok, impatient = pcall(require, 'impatient')
 if ok then
@@ -10,6 +11,21 @@ else
   -- vim.notify(tostring(ok), vim.log.levels.ERROR)
   vim.notify("cache is not loaded", vim.log.levels.ERROR)
 end
+EOF
+
+lua <<EOF
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 EOF
 
 
