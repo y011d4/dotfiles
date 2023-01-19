@@ -12,6 +12,8 @@ set -gx HISTCONTROL "ignoredups"
 # set -gx INDENT "    "
 set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 
+set -g theme_nerd_fonts yes
+
 set -U FZF_LEGACY_KEYBINDINGS 0
 
 function __ghqpeco -d "List git repositories"
