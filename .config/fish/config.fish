@@ -33,6 +33,7 @@ end
 
 set -g theme_color_scheme dark
 
+eval "$(pyenv init -)"
 if test -e $HOME/.virtualenvs/3.10.9/bin/activate.fish
   source $HOME/.virtualenvs/3.10.9/bin/activate.fish
 end
@@ -70,5 +71,4 @@ end
 set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
 
-eval "$(pyenv init -)"
 bass source $HOME/.cargo/env
