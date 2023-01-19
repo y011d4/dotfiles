@@ -68,14 +68,14 @@ require('mason-lspconfig').setup_handlers({ function(server)
           flake8 = {
             enabled = 1
           },
-          -- default で enabled = 1 っぽいけど
-          pylsp_mypy = {
-            enabled = 0
-          },
-          -- default で enabled = 1 っぽいけど (pylsp_isort の名前であってるかわからない)
-          pylsp_isort = {
-            enabled = 0
-          },
+          -- -- default で enabled = 1 っぽいけど
+          -- pylsp_mypy = {
+          --   enabled = 0
+          -- },
+          -- -- default で enabled = 1 っぽいけど (pylsp_isort の名前であってるかわからない)
+          -- pylsp_isort = {
+          --   enabled = 0
+          -- },
           pylint = {
             enabled = 0,
           },
@@ -101,7 +101,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
   require('lspconfig')[server].setup(opt)
 end })
 require("mason-null-ls").setup({
-    ensure_installed = nil,
-    automatic_installation = true,
-    automatic_setup = false,
+  ensure_installed = nil,
+  automatic_installation = true,
+  automatic_setup = false,
 })

@@ -26,6 +26,7 @@ require("lazy").setup({
     'nvim-treesitter/nvim-treesitter',
     setup = function()
       require("treesitter-setting")
+      -- vim.cmd(":TSUpdate")
     end
   },
   -- 現在のカーソル位置の関数を1行目に表示してくれる
@@ -38,6 +39,7 @@ require("lazy").setup({
   {
     'EdenEast/nightfox.nvim',
     lazy = false,
+    -- event = "VeryLazy",
     config = function()
       vim.cmd("colorscheme carbonfox")
     end
@@ -71,7 +73,8 @@ require("lazy").setup({
   -- カーソル下の単語全てに同じ色をつけてくれる
   {
     't9md/vim-quickhl',
-    lazy = false,
+    lazy = true,
+    keys = { "<leader>m" },
     config = function()
       -- nmap <Space>m <Plug>(quickhl-manual-this)
       -- xmap <Space>m <Plug>(quickhl-manual-this)
@@ -98,6 +101,7 @@ require("lazy").setup({
   -- scrollbar を表示
   {
     "petertriho/nvim-scrollbar",
+    -- event = "VeryLazy",
     dependencies = {
       'folke/tokyonight.nvim',
     },
@@ -126,7 +130,8 @@ require("lazy").setup({
     dependencies = {
       "petertriho/nvim-scrollbar",
     },
-    lazy = false,
+    lazy = true,
+    keys = { "/", "*", "n", "N" },
     config = function()
       require('nvim-hlslens-setting')
     end
@@ -135,7 +140,8 @@ require("lazy").setup({
   {
     'phaazon/hop.nvim',
     branch = 'v2', -- optional but strongly recommended
-    lazy = false,
+    lazy = true,
+    keys = { "<leader>j", "<leader>J" },
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
       require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
@@ -155,7 +161,8 @@ require("lazy").setup({
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-    lazy = false,
+    lazy = true,
+    keys = { "<leader>ff", "<leader>fg", "<leader>fb", "<leader>fh", "<leader>fr" },
     config = function()
       local builtin = require('telescope.builtin')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
@@ -172,7 +179,8 @@ require("lazy").setup({
       'kkharji/sqlite.lua',
       'nvim-telescope/telescope.nvim',
     },
-    lazy = false,
+    lazy = true,
+    keys = { "<leader>fy" },
     config = function()
       require('neoclip').setup()
       vim.keymap.set('n', '<leader>fy', ':Telescope neoclip a<cr>')
@@ -204,7 +212,8 @@ require("lazy").setup({
   -- keybind のマニュアルを :Whichkey で表示。自分で書かないとだめ?
   {
     'folke/which-key.nvim',
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require('which-key').setup()
     end
@@ -220,7 +229,6 @@ require("lazy").setup({
   -- コメントを tsx とかでも賢くやってくれる
   {
     'JoosepAlviste/nvim-ts-context-commentstring',
-    run = ":TSUpdate",
     lazy = false,
     config = function()
       require 'nvim-treesitter.configs'.setup {
@@ -233,7 +241,8 @@ require("lazy").setup({
   -- プログラミング言語特有のマッチもこなす (if, elif, else など) % でとべる
   {
     'andymass/vim-matchup',
-    lazy = false,
+    lazy = true,
+    ft = { "bash", "lua" },
     config = function()
       -- may set any options here
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
@@ -278,14 +287,26 @@ require("lazy").setup({
     }
   },
   -- cmp の補完でアイコンを表示
-  'onsails/lspkind.nvim',
+  {
+    'onsails/lspkind.nvim',
+    -- event = "InsertEnter",
+  },
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
       'onsails/lspkind.nvim',
       "L3MON4D3/LuaSnip",
+      -- 'saadparwaiz1/cmp_luasnip',
+      -- 'hrsh7th/cmp-nvim-lsp',
+      -- 'hrsh7th/cmp-nvim-lsp-signature-help',
+      -- 'hrsh7th/cmp-nvim-lsp-document-symbol',
+      -- 'hrsh7th/cmp-buffer',
+      -- 'hrsh7th/cmp-path',
+      -- 'hrsh7th/cmp-cmdline',
+      -- 'ray-x/cmp-treesitter',
     },
     lazy = false,
+    -- event = "InsertEnter",
     config = function()
       require("nvim-cmp-setting")
     end
@@ -300,7 +321,8 @@ require("lazy").setup({
   -- LSP の error を quickfix (?) に表示
   {
     'folke/trouble.nvim',
-    lazy = false,
+    lazy = true,
+    keys = { "<leader>xx", "<leader>xw", "<leader>xd", "<leader>xl", "<leader>xq", "gR" },
     config = function()
       require("trouble").setup {}
       vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
@@ -328,17 +350,16 @@ require("lazy").setup({
   -- 左側にファイル一覧を表示、そこからファイルを開いたりできる
   {
     "nvim-neo-tree/neo-tree.nvim",
-    branch = "2.48",
+    branch = "v2.x",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
       "s1n7ax/nvim-window-picker",
     },
-    -- opt = true,
-    -- keys = { "\\" },
-    -- cmd = "Neotree",
-    lazy = false,
+    lazy = true,
+    keys = { "\\" },
+    cmd = "Neotree",
     config = function()
       require("neo-tree-setting")
     end,
@@ -347,7 +368,8 @@ require("lazy").setup({
   {
     'TimUntersberger/neogit',
     dependencies = 'nvim-lua/plenary.nvim',
-    lazy = false,
+    lazy = true,
+    cmd = "Neogit",
     config = function()
       local neogit = require('neogit')
       neogit.setup {}
@@ -356,6 +378,16 @@ require("lazy").setup({
   -- :DiffviewOpen できれいに diff を表示
   {
     'sindrets/diffview.nvim',
+    lazy = true,
+    cmd = {
+      "DiffviewLog",
+      "DiffviewOpen",
+      "DiffviewClose",
+      "DiffviewRefresh",
+      "DiffviewFocusFiles",
+      "DiffviewFileHistory",
+      "DiffviewToggleFiles",
+    },
     dependencies = 'nvim-lua/plenary.nvim',
   },
   -- 'airblade/vim-gitgutter',
@@ -388,12 +420,20 @@ require("lazy").setup({
   {
     "L3MON4D3/LuaSnip", tag = "v1.1.0",
     lazy = false,
+    -- event = "InsertEnter",
     config = function()
       require("luasnip.loaders.from_lua").load()
     end
   },
   -- LuaSnip の補完
-  'saadparwaiz1/cmp_luasnip',
+  {
+    'saadparwaiz1/cmp_luasnip',
+    lazy = false,
+    event = "InsertEnter",
+    dependencies = {
+      "L3MON4D3/LuaSnip",
+    },
+  },
   {
     's1n7ax/nvim-window-picker',
     tag = 'v1.5',
@@ -405,7 +445,8 @@ require("lazy").setup({
   -- 関数一覧を表示したり、関数間のジャンプをしたり
   {
     'stevearc/aerial.nvim',
-    lazy = false,
+    lazy = true,
+    keys = { "{", "}", "<leader>a" },
     config = function()
       require("aerial").setup({
         -- optionally use on_attach to set keymaps when aerial has attached to a buffer
@@ -431,7 +472,8 @@ require("lazy").setup({
   {
     "folke/todo-comments.nvim",
     dependencies = "nvim-lua/plenary.nvim",
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require("todo-comments").setup {
         -- your configuration comes here
@@ -465,7 +507,11 @@ require("lazy").setup({
       -- require('impatient').enable_profile()
     end
   },
-  'dstein64/vim-startuptime',
+  {
+    'dstein64/vim-startuptime',
+    lazy = true,
+    cmd = "StartupTime",
+  },
   {
     'folke/neodev.nvim',
   },
