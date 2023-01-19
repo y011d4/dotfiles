@@ -20,7 +20,11 @@ require("lazy").setup({
   },
   --]]
   -- csv を列ごとに色をつけて表示
-  'mechatroner/rainbow_csv',
+  {
+    'mechatroner/rainbow_csv',
+    lazy = true,
+    ft = "csv",
+  },
   -- 構文解析に使う
   {
     'nvim-treesitter/nvim-treesitter',
@@ -41,9 +45,17 @@ require("lazy").setup({
     event = "VeryLazy",
   },
   -- 関数や括弧のスコープを行の最後に表示
-  'haringsrob/nvim_context_vt',
+  {
+    'haringsrob/nvim_context_vt',
+    lazy = true,
+    event = "VeryLazy",
+  },
   -- 使うプラグインがいるので
-  "kkharji/sqlite.lua",
+  {
+    "kkharji/sqlite.lua",
+    lazy = true,
+    event = "VeryLazy",
+  },
   -- colorscheme
   {
     'EdenEast/nightfox.nvim',
@@ -59,10 +71,16 @@ require("lazy").setup({
     'nvim-lua/popup.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
-    }
+    },
+    lazy = true,
+    event = "VeryLazy",
   },
   -- icon の種類を豊富にする
-  'nvim-tree/nvim-web-devicons',
+  {
+    'nvim-tree/nvim-web-devicons',
+    lazy = true,
+    event = "VeryLazy",
+  },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = {
@@ -83,7 +101,11 @@ require("lazy").setup({
   -- 同じ使い方をしている場所をハイライトしてくれる
   --'RRethy/vim-illuminate',
   -- 色コードに色がつく
-  'norcalli/nvim-colorizer.lua',
+  {
+    'norcalli/nvim-colorizer.lua',
+    lazy = true,
+    ft = { "html", "css", "tsx", "jsx" },
+  },
   -- カーソル下の単語全てに同じ色をつけてくれる
   {
     't9md/vim-quickhl',
@@ -119,7 +141,8 @@ require("lazy").setup({
     dependencies = {
       'folke/tokyonight.nvim',
     },
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require("scrollbar").setup({})
       -- local colors = require("tokyonight.colors").setup()
@@ -167,7 +190,11 @@ require("lazy").setup({
   -- f 移動をベターにする (?)
   -- 'ggandor/lightspeed.nvim',
   -- プラグインがの dependencies のためいれている
-  'nvim-lua/plenary.nvim',
+  {
+    'nvim-lua/plenary.nvim',
+    lazy = true,
+    event = "VeryLazy",
+  },
   -- file を探したり文字列検索したり
   {
     'nvim-telescope/telescope.nvim',
@@ -205,12 +232,15 @@ require("lazy").setup({
     setup = function()
       require "telescope".load_extension("frecency")
     end,
+    lazy = true,
+    event = "VeryLazy",
     dependencies = { "kkharji/sqlite.lua" }
   },
   -- * の検索の動作をよくする
   {
     'haya14busa/vim-asterisk',
-    lazy = false,
+    lazy = true,
+    keys = { "*", "#", "g*", "g#", "z*", "z#", "gz*", "gz#" },
     config = function()
       vim.keymap.set('', '*', '<Plug>(asterisk-*)')
       vim.keymap.set('', '#', '<Plug>(asterisk-#)')
@@ -235,7 +265,8 @@ require("lazy").setup({
   -- コメントを gcc (1行), gbc (ブロック) でやってくれる
   {
     'numToStr/Comment.nvim',
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require('Comment').setup()
     end
@@ -257,7 +288,7 @@ require("lazy").setup({
   {
     'andymass/vim-matchup',
     lazy = true,
-    ft = { "bash", "lua" },
+    ft = { "sh", "bash", "lua" },
     config = function()
       -- may set any options here
       vim.g.matchup_matchparen_offscreen = { method = "popup" }
@@ -440,7 +471,9 @@ require("lazy").setup({
     -- "jose-elias-alvarez/null-ls.nvim",
     "y011d4/null-ls.nvim",
     branch = "feature/add-pysen",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
     lazy = false,
     config = function()
       require("null-ls-setting")
