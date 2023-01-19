@@ -24,24 +24,24 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- let g:did_install_default_menus = 1
--- let g:did_install_syntax_menu   = 1
--- let g:did_indent_on             = 1
--- let g:did_load_filetypes        = 1
--- let g:did_load_ftplugin         = 0
--- let g:loaded_2html_plugin       = 1
--- let g:loaded_gzip               = 1
--- let g:loaded_man                = 1
--- let g:loaded_matchit            = 1
--- let g:loaded_matchparen         = 1
--- let g:loaded_netrwPlugin        = 1
--- let g:loaded_remote_plugins     = 1
--- let g:loaded_shada_plugin       = 1
--- let g:loaded_spellfile_plugin   = 1
--- let g:loaded_tarPlugin          = 1
--- let g:loaded_tutor_mode_plugin  = 1
--- let g:loaded_zipPlugin          = 1
--- let g:skip_loading_mswin        = 1
+-- vim.g["did_install_default_menus"] = 1
+-- vim.g["did_install_syntax_menu"]   = 1
+-- vim.g["did_indent_on"]             = 1
+-- vim.g["did_load_filetypes"]        = 1
+-- vim.g["did_load_ftplugin"]         = 0
+-- vim.g["loaded_2html_plugin"]       = 1
+-- vim.g["loaded_gzip"]               = 1
+-- vim.g["loaded_man"]                = 1
+-- vim.g["loaded_matchit"]            = 1
+-- vim.g["loaded_matchparen"]         = 1
+-- vim.g["loaded_netrwPlugin"]        = 1
+-- vim.g["loaded_remote_plugins"]     = 1
+-- vim.g["loaded_shada_plugin"]       = 1
+-- vim.g["loaded_spellfile_plugin"]   = 1
+-- vim.g["loaded_tarPlugin"]          = 1
+-- vim.g["loaded_tutor_mode_plugin"]  = 1
+-- vim.g["loaded_zipPlugin"]          = 1
+-- vim.g["skip_loading_mswin"]        = 1
 
 
 require('plugins')
@@ -89,18 +89,12 @@ let &t_ti.='\\e[1 q'
 let &t_SI.='\\e[5 q'
 let &t_EI.='\\e[1 q'
 let &t_te.='\\e[0 q'
-let g:previm_open_cmd = 'open -a Firefox'
+"let g:previm_open_cmd = 'open -a Firefox'
 set background=dark
 set t_Co=256
 set termguicolors
-"colorscheme carbonfox
-"let g:impact_transbg=1
-"colorscheme cryptohack
-"colorscheme iceberg
-"colorscheme monokai
 set cursorline
 set cursorcolumn
-
 
 let g:python3_host_prog = '/usr/bin/python'
 let g:python_host_prog = '/home/y011d4/.virtualenvs/python2-env/bin/python'

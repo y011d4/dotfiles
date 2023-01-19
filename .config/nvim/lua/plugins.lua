@@ -60,7 +60,8 @@ require("lazy").setup({
   -- colorscheme
   {
     'EdenEast/nightfox.nvim',
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     priority = 1000,
     -- event = "VeryLazy",
     config = function()
