@@ -24,13 +24,22 @@ require("lazy").setup({
   -- 構文解析に使う
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = true,
+    event = "VeryLazy",
     setup = function()
       require("treesitter-setting")
       -- vim.cmd(":TSUpdate")
     end
   },
   -- 現在のカーソル位置の関数を1行目に表示してくれる
-  'nvim-treesitter/nvim-treesitter-context',
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    },
+    lazy = true,
+    event = "VeryLazy",
+  },
   -- 関数や括弧のスコープを行の最後に表示
   'haringsrob/nvim_context_vt',
   -- 使うプラグインがいるので
@@ -39,6 +48,7 @@ require("lazy").setup({
   {
     'EdenEast/nightfox.nvim',
     lazy = false,
+    priority = 1000,
     -- event = "VeryLazy",
     config = function()
       vim.cmd("colorscheme carbonfox")
@@ -55,7 +65,11 @@ require("lazy").setup({
   'nvim-tree/nvim-web-devicons',
   {
     'nvim-lualine/lualine.nvim',
-    lazy = false,
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require('lualine-setting')
     end,
@@ -229,7 +243,8 @@ require("lazy").setup({
   -- コメントを tsx とかでも賢くやってくれる
   {
     'JoosepAlviste/nvim-ts-context-commentstring',
-    lazy = false,
+    lazy = true,
+    ft = { "tsx", "jsx" },
     config = function()
       require 'nvim-treesitter.configs'.setup {
         context_commentstring = {
@@ -289,35 +304,64 @@ require("lazy").setup({
   -- cmp の補完でアイコンを表示
   {
     'onsails/lspkind.nvim',
-    -- event = "InsertEnter",
+    lazy = true,
+    event = "InsertEnter",
   },
   {
     'hrsh7th/nvim-cmp',
     dependencies = {
       'onsails/lspkind.nvim',
       "L3MON4D3/LuaSnip",
-      -- 'saadparwaiz1/cmp_luasnip',
-      -- 'hrsh7th/cmp-nvim-lsp',
-      -- 'hrsh7th/cmp-nvim-lsp-signature-help',
-      -- 'hrsh7th/cmp-nvim-lsp-document-symbol',
-      -- 'hrsh7th/cmp-buffer',
-      -- 'hrsh7th/cmp-path',
-      -- 'hrsh7th/cmp-cmdline',
-      -- 'ray-x/cmp-treesitter',
+      'saadparwaiz1/cmp_luasnip',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'hrsh7th/cmp-nvim-lsp-document-symbol',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'ray-x/cmp-treesitter',
     },
-    lazy = false,
-    -- event = "InsertEnter",
+    lazy = true,
+    event = "InsertEnter",
     config = function()
       require("nvim-cmp-setting")
     end
   },
-  'hrsh7th/cmp-nvim-lsp',
-  'hrsh7th/cmp-nvim-lsp-signature-help',
-  'hrsh7th/cmp-nvim-lsp-document-symbol',
-  'hrsh7th/cmp-buffer',
-  'hrsh7th/cmp-path',
-  'hrsh7th/cmp-cmdline',
-  'ray-x/cmp-treesitter',
+  { 
+    'hrsh7th/cmp-nvim-lsp',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'hrsh7th/cmp-nvim-lsp-document-symbol',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'hrsh7th/cmp-buffer',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'hrsh7th/cmp-path',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'hrsh7th/cmp-cmdline',
+    lazy = true,
+    event = "InsertEnter",
+  },
+  {
+    'ray-x/cmp-treesitter',
+    lazy = true,
+    event = "InsertEnter",
+  },
   -- LSP の error を quickfix (?) に表示
   {
     'folke/trouble.nvim',
@@ -419,8 +463,8 @@ require("lazy").setup({
   -- snipet (lua 製)
   {
     "L3MON4D3/LuaSnip", tag = "v1.1.0",
-    lazy = false,
-    -- event = "InsertEnter",
+    lazy = true,
+    event = "InsertEnter",
     config = function()
       require("luasnip.loaders.from_lua").load()
     end
@@ -428,7 +472,7 @@ require("lazy").setup({
   -- LuaSnip の補完
   {
     'saadparwaiz1/cmp_luasnip',
-    lazy = false,
+    lazy = true,
     event = "InsertEnter",
     dependencies = {
       "L3MON4D3/LuaSnip",
