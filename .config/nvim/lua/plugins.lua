@@ -45,7 +45,7 @@ require("lazy").setup({
   -- 他のプラグインで使われているのでいれてる
   {
     'nvim-lua/popup.nvim',
-    requires = {
+    dependencies = {
       'nvim-lua/plenary.nvim',
     }
   },
@@ -61,7 +61,7 @@ require("lazy").setup({
   -- bufferline (?)
   --[[
   {
-      'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'
+      'akinsho/bufferline.nvim', tag = "v3.*", dependencies = 'nvim-tree/nvim-web-devicons'
   },
   --]]
   -- 同じ使い方をしている場所をハイライトしてくれる
@@ -87,7 +87,7 @@ require("lazy").setup({
   --[[
   {
     'goolord/alpha-nvim',
-    requires = { 'nvim-tree/nvim-web-devicons' },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     setup = function ()
         require'alpha'.setup(require'alpha.themes.dashboard'.config)
     end
@@ -98,7 +98,7 @@ require("lazy").setup({
   -- scrollbar を表示
   {
     "petertriho/nvim-scrollbar",
-    requires = {
+    dependencies = {
       'folke/tokyonight.nvim',
     },
     lazy = false,
@@ -123,7 +123,7 @@ require("lazy").setup({
   -- 検索時に何個目のマッチか表示
   {
     'kevinhwang91/nvim-hlslens',
-    requires = {
+    dependencies = {
       "petertriho/nvim-scrollbar",
     },
     lazy = false,
@@ -146,13 +146,13 @@ require("lazy").setup({
   -- 'unblevable/quick-scope',
   -- f 移動をベターにする (?)
   -- 'ggandor/lightspeed.nvim',
-  -- プラグインがの requires のためいれている
+  -- プラグインがの dependencies のためいれている
   'nvim-lua/plenary.nvim',
   -- file を探したり文字列検索したり
   {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.0',
-    requires = {
+    dependencies = {
       'nvim-lua/plenary.nvim',
     },
     lazy = false,
@@ -168,7 +168,7 @@ require("lazy").setup({
   -- yank 結果を保存して、 fuzzy で選べるように
   {
     "AckslD/nvim-neoclip.lua",
-    requires = {
+    dependencies = {
       'kkharji/sqlite.lua',
       'nvim-telescope/telescope.nvim',
     },
@@ -183,7 +183,7 @@ require("lazy").setup({
     setup = function()
       require "telescope".load_extension("frecency")
     end,
-    requires = { "kkharji/sqlite.lua" }
+    dependencies = { "kkharji/sqlite.lua" }
   },
   -- * の検索の動作をよくする
   {
@@ -266,15 +266,16 @@ require("lazy").setup({
     config = function()
       require("mason-lspconfig-setting")
     end,
-    requires = {
-      'williamboman/mason.nvim'
+    dependencies = {
+      'y011d4/mason.nvim',
+      'folke/neodev.nvim',
     }
   },
   -- cmp の補完でアイコンを表示
   'onsails/lspkind.nvim',
   {
     'hrsh7th/nvim-cmp',
-    requires = {
+    dependencies = {
       'onsails/lspkind.nvim',
       "L3MON4D3/LuaSnip",
     },
@@ -322,7 +323,7 @@ require("lazy").setup({
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "2.48",
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
@@ -339,7 +340,7 @@ require("lazy").setup({
   -- git add や git commit ができる
   {
     'TimUntersberger/neogit',
-    requires = 'nvim-lua/plenary.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
     lazy = false,
     config = function()
       local neogit = require('neogit')
@@ -349,7 +350,7 @@ require("lazy").setup({
   -- :DiffviewOpen できれいに diff を表示
   {
     'sindrets/diffview.nvim',
-    requires = 'nvim-lua/plenary.nvim',
+    dependencies = 'nvim-lua/plenary.nvim',
   },
   -- 'airblade/vim-gitgutter',
   -- linter や formatter のために使用
@@ -366,7 +367,7 @@ require("lazy").setup({
   -- git の diff 状態を左側に緑/赤で表示してくれる
   {
     'lewis6991/gitsigns.nvim',
-    requires = {
+    dependencies = {
       "petertriho/nvim-scrollbar",
     },
     lazy = false,
@@ -423,7 +424,7 @@ require("lazy").setup({
   -- TODO を目立つように表示
   {
     "folke/todo-comments.nvim",
-    requires = "nvim-lua/plenary.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
     lazy = false,
     config = function()
       require("todo-comments").setup {
@@ -459,4 +460,7 @@ require("lazy").setup({
     end
   },
   'dstein64/vim-startuptime',
+  {
+    'folke/neodev.nvim',
+  }
 })

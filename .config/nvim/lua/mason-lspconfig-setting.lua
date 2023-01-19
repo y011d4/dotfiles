@@ -1,5 +1,8 @@
 -- 1. LSP Sever management
 require('mason').setup()
+require("neodev").setup({
+  -- add any options here, or leave empty to use the default settings
+})
 require('mason-lspconfig').setup {
     ensure_installed = { "sumneko_lua", "rust_analyzer", "gopls", "tsserver", "pylsp" }
 }
@@ -87,6 +90,11 @@ require('mason-lspconfig').setup_handlers({ function(server)
                         enabled = 0,
                     },
                 },
+            },
+            Lua = {
+              completion = {
+                callSnippet = "Replace"
+              }
             }
         }
     }
