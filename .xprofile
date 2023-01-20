@@ -1,0 +1,9 @@
+export XMODIFIERS="@im=fcitx"
+export XMODIFIER="@im=fcitx"
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export DefaultIMModule=fcitx
+
+setxkbmap -option ctrl:nocaps -option altwin:swap_alt_win
+
+fcitx
