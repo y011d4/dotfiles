@@ -641,6 +641,42 @@ require("lazy").setup({
       --   `nvim-notify` is only needed, if you want to use the notification view.
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
-    }
-  }
+    },
+  },
+  {
+    "mfussenegger/nvim-dap",
+    lazy = true,
+    keys = { "<leader>du" },
+    init = function()
+      vim.keymap.set("n", "<leader>db", "<cmd>DapToggleBreakpoint<cr>")
+      vim.keymap.set("n", "<leader>dc", "<cmd>DapContinue<cr>")
+      vim.keymap.set("n", "<leader>do", "<cmd>DapStepOver<cr>")
+      vim.keymap.set("n", "<leader>di", "<cmd>DapStepInto<cr>")
+      vim.keymap.set("n", "<leader>dw", "<cmd>lua require('dap.ui.widgets').hover()<cr>")
+      vim.keymap.set("n", "<leader>dr", "<cmd>DapToggleRepl<cr>")
+    end,
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    lazy = true,
+    keys = { "<leader>du" },
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require("dapui").setup()
+      vim.keymap.set("n", "<leader>du", "<cmd>lua require('dapui').toggle({})<cr>")
+    end,
+  },
+  {
+    "mfussenegger/nvim-dap-python",
+    lazy = true,
+    keys = { "<leader>du" },
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require("dap-python").setup("~/.virtualenvs/debugpy/bin/python")
+    end,
+  },
 })
