@@ -170,7 +170,7 @@ require("lazy").setup({
       "petertriho/nvim-scrollbar",
     },
     lazy = true,
-    keys = { "/", "*" },
+    keys = { "/", "*", "#", "g*", "g#", "n", "N" },
     config = function()
       require('nvim-hlslens-setting')
     end
