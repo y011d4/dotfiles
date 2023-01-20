@@ -590,14 +590,17 @@ require("lazy").setup({
       -- require('impatient').enable_profile()
     end,
   },
+  -- :StartupTime で起動速度計測
   {
     "dstein64/vim-startuptime",
     lazy = true,
     cmd = "StartupTime",
   },
+  -- nvim の設定に signature をつけてくれるらしいが、うまく動いていない気がする
   {
     "folke/neodev.nvim",
   },
+  -- null-ls と mason の連携をよくしてくれる
   {
     "jay-babu/mason-null-ls.nvim",
     dependencies = {
@@ -605,6 +608,7 @@ require("lazy").setup({
       "y011d4/null-ls.nvim",
     },
   },
+  -- cmdline やエラー表示がいい感じに
   {
     "folke/noice.nvim",
     lazy = false,
@@ -642,6 +646,7 @@ require("lazy").setup({
       "rcarriga/nvim-notify",
     },
   },
+  -- dap
   {
     "mfussenegger/nvim-dap",
     lazy = true,
@@ -655,6 +660,7 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>dr", "<cmd>DapToggleRepl<cr>")
     end,
   },
+  -- dap の UI
   {
     "rcarriga/nvim-dap-ui",
     lazy = true,
@@ -665,8 +671,11 @@ require("lazy").setup({
     config = function()
       require("dapui").setup()
       vim.keymap.set("n", "<leader>du", "<cmd>lua require('dapui').toggle({})<cr>")
+      vim.keymap.set("n", "<leader>dh", "<cmd>lua require('dapui').eval()<cr>")
     end,
   },
+  -- dap を python で使う
+  -- `python3 -m venv ~/.virtualenvs/debugpy && ~/.virtualenvs/debugpy/bin/pip3 install debugpy` を事前に叩く
   {
     "mfussenegger/nvim-dap-python",
     lazy = true,
