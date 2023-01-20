@@ -17,5 +17,9 @@ null_ls.setup {
         null_ls.builtins.formatting.isort,
         -- null_ls.builtins.formatting.pysen,
         null_ls.builtins.formatting.rustfmt,
+        -- null_ls.builtins.diagnostics.fish,
+        -- null_ls.builtins.formatting.fish_indent,
+        null_ls.builtins.diagnostics.yamllint,
+        null_ls.builtins.formatting.yamlfmt,
     },
 }
