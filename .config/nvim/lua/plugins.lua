@@ -30,7 +30,7 @@ require("lazy").setup({
     'nvim-treesitter/nvim-treesitter',
     build = ":TSUpdate",
     lazy = true,
-    event = "VeryLazy",
+    event = "BufRead",
     -- priority = 1,
     config = function()
       require("treesitter-setting")
@@ -43,7 +43,7 @@ require("lazy").setup({
       "nvim-treesitter/nvim-treesitter",
     },
     lazy = true,
-    event = "VeryLazy",
+    event = "BufRead",
   },
   -- 関数や括弧のスコープを行の最後に表示
   {
