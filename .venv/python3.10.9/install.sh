@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
   pyenv local $python_version
 fi
 
-python -m venv "$HOME/.virtualenvs/$python_version"
+python3 -m venv "$HOME/.virtualenvs/$python_version"
 source "$HOME/.virtualenvs/$python_version/bin/activate"
 poetry export -f requirements.txt > requirements.txt
 pip3 install -r requirements.txt

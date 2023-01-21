@@ -1,0 +1,43 @@
+name: Install
+on: [push]
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    container: ubuntu:latest
+    steps:
+      - name: Install required packages
+        run: apt update && apt upgrade && apt install -y git
+      - name: Install dotfiles
+        run: |
+          git clone --bare https://github.com/y011d4/dotfiles.git $HOME/.dotfiles.git
+          alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+          dotfiles config status.showuntrackedfiles no
+          dotfiles checkout
+          # if some files are conflicted, make backup and then checkout
+          if [ $? -ne 0 ]; then
+            for i in $(dotfiles checkout 2>&1 | head -n -2 | awk 'NR>1{print $1}'); do
+              mv $i $i.bk
+            done
+            dotfiles checkout
+          fi
+  arch:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Update packages
+        run: pacman -Syu --noconfirm
+      - name: Install required packages
+        run: pacman -S --noconfirm git
+      - name: Install dotfiles
+        run: |
+          git clone --bare https://github.com/y011d4/dotfiles.git $HOME/.dotfiles.git
+          alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
+          dotfiles config status.showuntrackedfiles no
+          dotfiles checkout
+          # if some files are conflicted, make backup and then checkout
+          if [ $? -ne 0 ]; then
+            for i in $(dotfiles checkout 2>&1 | head -n -2 | awk 'NR>1{print $1}'); do
+              mv $i $i.bk
+            done
+            dotfiles checkout
+          fi
