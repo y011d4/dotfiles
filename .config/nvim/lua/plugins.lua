@@ -532,12 +532,15 @@ require("lazy").setup({
     keys = { "{", "}", "<leader>a" },
     config = function()
       require("aerial").setup({
+        -- lsp first because lsp has rich info
+        -- backends = { "lsp", "treesitter", "markdown", "man" },
         -- optionally use on_attach to set keymaps when aerial has attached to a buffer
         on_attach = function(bufnr)
           -- Jump forwards/backwards with '{' and '}'
           vim.keymap.set("n", "{", "<cmd>AerialPrev<CR>", { buffer = bufnr })
           vim.keymap.set("n", "}", "<cmd>AerialNext<CR>", { buffer = bufnr })
         end,
+        -- filter_kind = false,
       })
       -- You probably also want to set a keymap to toggle aerial
       vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
@@ -614,28 +617,7 @@ require("lazy").setup({
     lazy = false,
     event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
     config = function()
-      require("noice").setup({
-        lsp = {
-          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
-          signature = {
-            enabled = false,
-          },
-        },
-        -- you can enable a preset for easier configuration
-        presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = true, -- position the cmdline and popupmenu together
-          long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = false, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
-        },
-        -- add any options here
-      })
+      require("noice-nvim-setting")
     end,
     dependencies = {
       -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
@@ -701,21 +683,7 @@ require("lazy").setup({
     lazy = true,
     event = "BufRead",
     config = function()
-      vim.o.foldcolumn = "1" -- '0' is not bad
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-      vim.keymap.set("n", "zR", require("ufo").openAllFolds)
-      vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
-      -- Option 3: treesitter as a main provider instead
-      -- Only depend on `nvim-treesitter/queries/filetype/folds.scm`,
-      -- performance and stability are better than `foldmethod=nvim_treesitter#foldexpr()`
-      require("ufo").setup({
-        provider_selector = function(bufnr, filetype, buftype)
-          return { "treesitter", "indent" }
-        end,
-      })
+      require("nvim-ufo-setting")
     end,
   },
   -- markdown の preview を PeekOpen で表示できる
@@ -728,6 +696,52 @@ require("lazy").setup({
       require("peek").setup()
       vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
       vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
+  {
+    "monaqa/dial.nvim",
+    lazy = true,
+    keys = { "<C-a>", "<C-x>" },
+    config = function()
+      require("dial-setting")
+    end,
+  },
+  {
+    "simrat39/symbols-outline.nvim",
+    lazy = true,
+    keys = { "<leader>s" },
+    config = function()
+      vim.keymap.set("n", "<leader>s", "<cmd>SymbolsOutline<cr>")
+      require("symbols-outline").setup()
+    end,
+  },
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    lazy = true,
+    keys = { "<leader>nf", "<leader>nc" },
+    config = function()
+      require("neogen").setup({
+        snippet_engine = "luasnip",
+      })
+      local opts = { noremap = true, silent = true }
+      vim.api.nvim_set_keymap("n", "<Leader>nf", ":lua require('neogen').generate()<CR>", opts)
+      vim.api.nvim_set_keymap("n", "<Leader>nc", ":lua require('neogen').generate({ type = 'class' })<CR>", opts)
+    end,
+    -- Uncomment next line if you want to follow only stable versions
+    -- version = "*"
+  },
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    lazy = true,
+    -- keys = { "<leader>re", "<leader>rf", "<leader>rv", "<leader>ri", "<leader>rb", "<leader>rbf", "<leader>ri"},
+    event = "VeryLazy",
+    config = function()
+      require("refactoring-setting")
     end,
   },
 })
