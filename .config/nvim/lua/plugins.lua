@@ -60,7 +60,7 @@ require("lazy").setup({
   -- colorscheme
   {
     "EdenEast/nightfox.nvim",
-    lazy = true,
+    lazy = false,
     event = "VeryLazy",
     priority = 1000,
     -- event = "VeryLazy",
@@ -135,7 +135,10 @@ require("lazy").setup({
   },
   --]]
   -- scrollbar 用のカラースキーム
-  "folke/tokyonight.nvim",
+  {
+    "folke/tokyonight.nvim",
+    lazy = true,
+  },
   -- scrollbar を表示
   {
     "petertriho/nvim-scrollbar",
@@ -497,7 +500,11 @@ require("lazy").setup({
     end,
   },
   -- quickfix (gr で表示される枠) をよくする。そこから <C-t> や <C-v> でファイルを開けるようになったり
-  "kevinhwang91/nvim-bqf",
+  {
+    "kevinhwang91/nvim-bqf",
+    lazy = true,
+    event = "VeryLazy",
+  },
   -- snipet (lua 製)
   {
     "L3MON4D3/LuaSnip",
@@ -520,7 +527,7 @@ require("lazy").setup({
   {
     "s1n7ax/nvim-window-picker",
     tag = "v1.5",
-    lazy = false,
+    lazy = true,
     config = function()
       require("window-picker").setup()
     end,
@@ -549,7 +556,8 @@ require("lazy").setup({
   -- 右下に LSP の状態を表示
   {
     "j-hui/fidget.nvim",
-    lazy = false,
+    lazy = true,
+    event = "VeryLazy",
     config = function()
       require("fidget").setup({})
     end,
@@ -587,7 +595,7 @@ require("lazy").setup({
   -- nvim 読み込み時の cache を作り、起動を高速化する
   {
     "lewis6991/impatient.nvim",
-    lazy = false,
+    lazy = true,
     config = function()
       -- init.vim で呼んでいる
       -- require('impatient').enable_profile()
@@ -651,6 +659,65 @@ require("lazy").setup({
       "mfussenegger/nvim-dap",
     },
     config = function()
+      local dap = require("dap")
+      dap.adapters.lldb = {
+        type = "executable",
+        command = "/usr/bin/lldb-vscode",
+        name = "lldb",
+      }
+      dap.adapters.codelldb = {
+        type = 'server',
+        port = "${port}",
+        executable = {
+          -- CHANGE THIS to your path!
+          command = '/home/y011d4/.local/share/nvim/mason/bin/codelldb',
+          args = { "--port", "${port}" },
+
+          -- On windows you may have to uncomment this:
+          -- detached = false,
+        }
+      }
+      dap.configurations.cpp = {
+        {
+          name = 'Launch',
+          type = 'lldb',
+          request = 'launch',
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+          args = {},
+
+          -- 💀
+          -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
+          --
+          --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+          --
+          -- Otherwise you might get the following error:
+          --
+          --    Error on launch: Failed to attach to the target process
+          --
+          -- But you should be aware of the implications:
+          -- https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+          -- runInTerminal = false,
+        },
+        {
+          name = "Launch file",
+          type = "codelldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          end,
+          cwd = '${workspaceFolder}',
+          stopOnEntry = false,
+        },
+      }
+
+      -- If you want to use this for Rust and C, add something like this:
+
+      dap.configurations.c = dap.configurations.cpp
+      dap.configurations.rust = dap.configurations.cpp
       require("dapui").setup()
       vim.keymap.set("n", "<leader>du", "<cmd>lua require('dapui').toggle({})<cr>")
       vim.keymap.set("n", "<leader>dh", "<cmd>lua require('dapui').eval()<cr>")
