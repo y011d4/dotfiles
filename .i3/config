@@ -467,12 +467,12 @@ exec --no-startup-id google-chrome-stable
 # exec --no-startup-id "i3-msg 'workspace 2; append_layout /home/y011d4/.i3/workspace-jupyter.json'"
 # exec --no-startup-id vivaldi-stable
 # exec --no-startup-id "i3-msg 'workspace 6; append_layout /home/y011d4/.i3/workspace-docs.json'"
-exec --no-startup-id "i3-msg 'workspace 6; append_layout /home/y011d4/.i3/workspace-6.json'"
+# exec --no-startup-id "i3-msg 'workspace 6; append_layout /home/y011d4/.i3/workspace-6.json'"
 # exec --no-startup-id zotero
 # exec --no-startup-id notion-app
-exec --no-startup-id obsidian
+# exec --no-startup-id obsidian
 # exec --no-startup-id "i3-msg 'workspace 7; append_layout /home/y011d4/.i3/workspace-media.json'"
 exec --no-startup-id "i3-msg 'workspace 7; append_layout /home/y011d4/.i3/workspace-7.json'"
 exec --no-startup-id slack
-exec --no-startup-id thunderbird
 exec --no-startup-id discord
+exec --no-startup-id thunderbird
