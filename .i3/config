@@ -471,7 +471,6 @@ exec --no-startup-id "i3-msg 'workspace 6; append_layout /home/y011d4/.i3/worksp
 # exec --no-startup-id zotero
 # exec --no-startup-id notion-app
 exec --no-startup-id obsidian
-# exec --no-startup-id zathura /home/y011d4/jxtg/files/3BE.pdf
 # exec --no-startup-id "i3-msg 'workspace 7; append_layout /home/y011d4/.i3/workspace-media.json'"
 exec --no-startup-id "i3-msg 'workspace 7; append_layout /home/y011d4/.i3/workspace-7.json'"
 exec --no-startup-id slack
