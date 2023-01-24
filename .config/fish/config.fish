@@ -69,6 +69,14 @@ function kl -d "kl POD_OR_JOB_NAME"
   kubectl logs $argv[1]
 end
 
+function diff-less -d "diff and less"
+  if test (count $argv) -ne 2
+    echo "usage: diff-less OLD NEW"
+    return 1
+  end
+  diff -u $argv[1] $argv[2] | diff-so-fancy | less -R
+end
+
 
 set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
