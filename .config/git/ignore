@@ -1,2 +1,3 @@
 work/
 .vscode/
+__pycache__
