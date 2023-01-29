@@ -6,7 +6,7 @@ jobs:
     container: ubuntu:latest
     steps:
       - name: Install required packages
-        run: apt update && apt upgrade && apt install -y git
+        run: apt update && apt upgrade -y && apt install -y git
       - name: Install dotfiles
         run: |
           git clone --bare https://github.com/y011d4/dotfiles.git $HOME/.dotfiles.git
