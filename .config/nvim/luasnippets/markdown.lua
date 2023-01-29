@@ -25,6 +25,24 @@ return {
       "",
     }),
   }),
+  s("|(", {
+    t("\\left( "),
+    i(1),
+    t(" \\right)"),
+    i(0),
+  }),
+  s("|_", {
+    t("_{"),
+    i(1),
+    t("}"),
+    i(0),
+  }),
+  s("|align", {
+    t({"$$", "\\begin{align*}", ""}),
+    i(1),
+    t({"", "\\end{align*}", "$$", ""}),
+    i(0),
+  }),
 }, {
   s("autotrig", t("autoloaded!")) -- example
 }
