@@ -496,7 +496,7 @@ require("lazy").setup({
     event = { "FocusLost", "CursorHold" },
     config = function()
       require("gitsigns").setup({})
-      require("scrollbar.handlers.gitsigns").setup()
+      -- require("scrollbar.handlers.gitsigns").setup()
     end,
   },
   -- quickfix (gr で表示される枠) をよくする。そこから <C-t> や <C-v> でファイルを開けるようになったり

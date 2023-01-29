@@ -64,6 +64,7 @@ local options = {
     showmatch = true, --?
 
     wrapscan = true, --検索時に最後まで行ったら最初に戻る
+    wrap = true,
 
     swapfile = false, --swap file is not created
     autoread = true, --vim automatically reload when saved in other action
