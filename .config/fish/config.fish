@@ -50,10 +50,9 @@ function ke -d "ke POD_NAME -s SHELL"
   or set -l _flag_shell "fish"
   kubectl exec -it $argv[1] -- $_flag_shell
 end
-alias kgp="kubectl get pod"
-alias kgp="kubectl get pod"
-alias kgj="kubectl get job"
-alias kdja="kubectl delete job --all"
+abbr --add kgp "kubectl get pod"
+abbr --add kgj "kubectl get job"
+abbr --add kdja "kubectl delete job --all"
 function kdp -d "kdp POD_NAME"
   if test (count $argv) -ne 1
     echo "usage: kdp POD_NAME"
@@ -77,6 +76,15 @@ function diff-less -d "diff and less"
   diff -u $argv[1] $argv[2] | diff-so-fancy | less -R
 end
 
+abbr --add gs "git switch"
+abbr --add gf "git fetch"
+abbr --add gm "git merge"
+abbr --add gp "git push"
+
+function nvim_edit
+  echo nvim $argv
+end
+abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
 
 set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
