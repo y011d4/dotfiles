@@ -86,6 +86,8 @@ function nvim_edit
 end
 abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
 
+abbr --add n nvim
+
 set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
 
