@@ -1,8 +1,12 @@
 export XMODIFIERS="@im=fcitx"
-export XMODIFIER="@im=fcitx"
+# export XMODIFIER="@im=fcitx"
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
-export DefaultIMModule=fcitx
+# export DefaultIMModule=fcitx
+
+# NOTE: These settings are needed only for the current laptop.
+export LIBGL_DRI3_DISABLE=1
+export MESA_LOADER_DRIVER_OVERRIDE=NON_EXIST_DRIVER
 
 setxkbmap -option ctrl:nocaps -option altwin:swap_alt_win
 

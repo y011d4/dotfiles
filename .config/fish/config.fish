@@ -89,9 +89,12 @@ abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
 
 abbr --add n nvim
 
-set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
+# set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
 
 if test -e $HOME/.cargo/env
   bass source $HOME/.cargo/env
 end
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/y011d4/google-cloud-sdk/path.fish.inc' ]; . '/home/y011d4/google-cloud-sdk/path.fish.inc'; end
