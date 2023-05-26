@@ -140,7 +140,7 @@ require("lazy").setup({
     lazy = true,
   },
   -- scrollbar を表示
-  {
+  --[[ {
     "petertriho/nvim-scrollbar",
     -- event = "VeryLazy",
     dependencies = {
@@ -165,7 +165,7 @@ require("lazy").setup({
       --   }
       -- })
     end,
-  },
+  }, ]]
   -- 検索時に何個目のマッチか表示
   {
     "kevinhwang91/nvim-hlslens",
@@ -495,7 +495,17 @@ require("lazy").setup({
     lazy = true,
     event = { "FocusLost", "CursorHold" },
     config = function()
-      require("gitsigns").setup({})
+      require("gitsigns").setup({
+        on_attach = function(bufnr)
+          local function map(mode, lhs, rhs, opts)
+              opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
+              vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+          end
+          -- Navigation
+          map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
+          map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+        end
+      })
       -- require("scrollbar.handlers.gitsigns").setup()
     end,
   },
@@ -742,7 +752,7 @@ require("lazy").setup({
     lazy = true,
   },
   -- unfold, fold
-  {
+  --[[ {
     "kevinhwang91/nvim-ufo",
     dependencies = {
       "kevinhwang91/promise-async",
@@ -752,7 +762,7 @@ require("lazy").setup({
     config = function()
       require("nvim-ufo-setting")
     end,
-  },
+  }, ]]
   -- markdown の preview を PeekOpen で表示できる
   {
     "toppair/peek.nvim",

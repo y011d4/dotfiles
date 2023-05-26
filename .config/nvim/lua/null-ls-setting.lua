@@ -21,5 +21,10 @@ null_ls.setup {
         -- null_ls.builtins.formatting.fish_indent,
         null_ls.builtins.diagnostics.yamllint,
         null_ls.builtins.formatting.yamlfmt,
+
+        null_ls.builtins.formatting.shfmt,
+        null_ls.builtins.diagnostics.shellcheck,
+
+        null_ls.builtins.formatting.csharpier,
     },
 }

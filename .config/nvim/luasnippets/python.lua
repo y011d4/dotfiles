@@ -1,4 +1,17 @@
 return {
+  s("|import", {
+    t({
+      "import re",
+      "from base64 import b64encode, b64decode",
+      "from hashlib import md5, sha256",
+      "",
+      "from Crypto.Cipher import AES",
+      "from Crypto.Util.number import bytes_to_long, long_to_bytes",
+      "from pwn import remote, xor",
+      "from tqdm import tqdm",
+    }),
+    i(0),
+  }),
   -- https://github.com/defund/coppersmith/blob/master/coppersmith.sage
   s("|defund", {
     i(0),
