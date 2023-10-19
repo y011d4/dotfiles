@@ -44,30 +44,33 @@ end
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
 # kubernetes
-function ke -d "ke POD_NAME -s SHELL"
-  argparse -N 1 -X 1 "s/shell=" -- $argv
-  or return 1
-  set -lq _flag_shell
-  or set -l _flag_shell "fish"
-  kubectl exec -it $argv[1] -- $_flag_shell
-end
+# function ke -d "ke POD_NAME -s SHELL"
+#   argparse -N 1 -X 1 "s/shell=" -- $argv
+#   or return 1
+#   set -lq _flag_shell
+#   or set -l _flag_shell "fish"
+#   kubectl exec -it $argv[1] -- $_flag_shell
+# end
+abbr --add ke "kubectl exec -it"
 abbr --add kgp "kubectl get pod"
+abbr --add kdp "kubectl delete pod"
 abbr --add kgj "kubectl get job"
-abbr --add kdja "kubectl delete job --all"
-function kdp -d "kdp POD_NAME"
-  if test (count $argv) -ne 1
-    echo "usage: kdp POD_NAME"
-    return 1
-  end
-  kubectl delete pod $argv[1]
-end
-function kl -d "kl POD_OR_JOB_NAME"
-  if test (count $argv) -ne 1
-    echo "usage: kl POD_OR_JOB_NAME"
-    return 1
-  end
-  kubectl logs $argv[1]
-end
+abbr --add kdj "kubectl delete job"
+abbr --add kl "kubectl logs"
+# function kdp -d "kdp POD_NAME"
+#   if test (count $argv) -ne 1
+#     echo "usage: kdp POD_NAME"
+#     return 1
+#   end
+#   kubectl delete pod $argv[1]
+# end
+# function kl -d "kl POD_OR_JOB_NAME"
+#   if test (count $argv) -ne 1
+#     echo "usage: kl POD_OR_JOB_NAME"
+#     return 1
+#   end
+#   kubectl logs $argv[1]
+# end
 
 function diff-less -d "diff and less"
   if test (count $argv) -ne 2
@@ -77,24 +80,37 @@ function diff-less -d "diff and less"
   diff -u $argv[1] $argv[2] | diff-so-fancy | less -R
 end
 
-abbr --add gs "git switch"
-abbr --add gf "git fetch"
-abbr --add gm "git merge"
-abbr --add gp "git push"
+abbr --add gits "git switch"
+abbr --add gitc "git checkout"
+abbr --add gitf "git fetch"
+abbr --add gitm "git merge"
+abbr --add gitp "git push"
+
+abbr --add md "mv ~/Downloads/"
+abbr --add tarx "tar axvf"
 
 function nvim_edit
   echo nvim $argv
 end
-abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
+# abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
 
 abbr --add n nvim
 
+abbr --add pwnenv "docker exec -it pwn bash"
+
 # set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
+fish_add_path $HOME/go/bin
+fish_add_path $HOME/.dotnet/tools
 
 if test -e $HOME/.cargo/env
   bass source $HOME/.cargo/env
 end
 
+set -gx FLYCTL_INSTALL "/home/y011d4/.fly"
+fish_add_path $FLYCTL_INSTALL/bin
+
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/home/y011d4/google-cloud-sdk/path.fish.inc' ]; . '/home/y011d4/google-cloud-sdk/path.fish.inc'; end
+
+set -ga fish_user_paths /home/y011d4/.nimble/bin

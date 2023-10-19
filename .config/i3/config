@@ -67,7 +67,8 @@ bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
 #bindsym $mod+F2 exec chromium
 #bindsym $mod+F2 exec vivaldi-stable
 bindsym $mod+F2 exec google-chrome-stable
-bindsym $mod+F3 exec pcmanfm
+# bindsym $mod+F3 exec pcmanfm
+bindsym $mod+F3 exec thunar
 bindsym $mod+Shift+F3 exec gksu pcmanfm
 bindsym $mod+F5 exec terminal -e 'mocp'
 bindsym $mod+t exec --no-startup-id pkill compton
@@ -430,11 +431,13 @@ mode "$mode_gaps_outer" {
 }
 
 # Some configurations below are added manualy
-set $mode_display Ext Screen (h) HDMI ON, (x) HDMI OFF, (d) HDMI same
+set $mode_display Ext Screen (h) HDMI ON, (d) DP1 ON, (x) OFF
+# set $mode_display Ext Screen (h) HDMI ON, (x) HDMI OFF, (d) HDMI same
 mode "$mode_display" {
     bindsym h exec --no-startup-id xrandr --output HDMI1 --mode 2560x1440 --below eDP1, mode "default"
-    bindsym x exec --no-startup-id xrandr --output HDMI1 --auto --off, mode "default"
-    bindsym d exec --no-startup-id xrandr --output HDMI1 --mode 2560x1440 --same-as eDP1, mode "default"
+    bindsym d exec --no-startup-id xrandr --output DP1 --mode 2560x1440 --below eDP1, mode "default"
+    # bindsym d exec --no-startup-id xrandr --output HDMI1 --mode $(xrandr | grep HDMI1 -A 2 | tail -n 1 | awk '{print $1}') --same-as eDP1, mode "default"
+    bindsym x exec --no-startup-id xrandr --output HDMI1 --auto --off && xrandr --output DP1 --auto --off, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
