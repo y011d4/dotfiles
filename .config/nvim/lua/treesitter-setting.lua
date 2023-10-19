@@ -1,3 +1,12 @@
+-- https://github.com/aMOPel/tree-sitter-nim/issues/20
+local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+parser_configs.nim = {
+  install_info = {
+    url = "~/.local/share/nvim/lazy/tree-sitter-nim", -- or where ever you cloned the repo to
+    files = { "src/parser.c", "src/scanner.cc"}
+  },
+}
+
 require 'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
     ensure_installed = { "c", "lua", "rust", "bash", "dockerfile", "css", "cmake", "diff", "go", "html", "http", "java",

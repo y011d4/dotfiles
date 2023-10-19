@@ -203,7 +203,7 @@ require("lazy").setup({
   -- file を探したり文字列検索したり
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.0",
+    tag = "0.1.4",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -307,7 +307,7 @@ require("lazy").setup({
     lazy = false,
     dependencies = {
       { "folke/neodev.nvim", config = true },
-      "y011d4/mason.nvim",
+      "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
       "hrsh7th/cmp-nvim-lsp",
     },
@@ -324,9 +324,9 @@ require("lazy").setup({
   },
   -- LSP サーバーを UI からインストールできる
   {
-    -- 'williamboman/mason.nvim',
-    "y011d4/mason.nvim",
-    branch = "feature/add-pysen",
+    'williamboman/mason.nvim',
+    -- "y011d4/mason.nvim",
+    -- branch = "feature/add-pysen",
   },
   -- mason でいれた LSP サーバー経由で設定
   {
@@ -336,7 +336,7 @@ require("lazy").setup({
       require("mason-lspconfig-setting")
     end,
     dependencies = {
-      "y011d4/mason.nvim",
+      "williamboman/mason.nvim",
       "folke/neodev.nvim",
     },
   },
@@ -474,9 +474,9 @@ require("lazy").setup({
   -- 'airblade/vim-gitgutter',
   -- linter や formatter のために使用
   {
-    -- "jose-elias-alvarez/null-ls.nvim",
-    "y011d4/null-ls.nvim",
-    branch = "feature/add-pysen",
+    "jose-elias-alvarez/null-ls.nvim",
+    -- "y011d4/null-ls.nvim",
+    -- branch = "feature/add-pysen",
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
@@ -566,6 +566,7 @@ require("lazy").setup({
   -- 右下に LSP の状態を表示
   {
     "j-hui/fidget.nvim",
+    tag = "legacy",
     lazy = true,
     event = "VeryLazy",
     config = function()
@@ -595,13 +596,13 @@ require("lazy").setup({
     end,
   },
   -- notification を右上に表示
-  {
+  --[[ {
     "rcarriga/nvim-notify",
     lazy = false,
     config = function()
       vim.notify = require("notify")
     end,
-  },
+  }, ]]
   -- nvim 読み込み時の cache を作り、起動を高速化する
   {
     "lewis6991/impatient.nvim",
@@ -625,12 +626,12 @@ require("lazy").setup({
   {
     "jay-babu/mason-null-ls.nvim",
     dependencies = {
-      "y011d4/mason.nvim",
-      "y011d4/null-ls.nvim",
+      "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
     },
   },
   -- cmdline やエラー表示がいい感じに
-  {
+  --[[ {
     "folke/noice.nvim",
     lazy = false,
     event = { "BufRead", "BufNewFile", "InsertEnter", "CmdlineEnter" },
@@ -645,7 +646,7 @@ require("lazy").setup({
       --   If not available, we use `mini` as the fallback
       "rcarriga/nvim-notify",
     },
-  },
+  }, ]]
   -- dap
   {
     "mfussenegger/nvim-dap",
@@ -820,5 +821,9 @@ require("lazy").setup({
     config = function()
       require("refactoring-setting")
     end,
+  },
+  {
+    "alaviss/tree-sitter-nim",
+    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 })
