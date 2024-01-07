@@ -5,7 +5,7 @@ require("neodev").setup({
 require('mason').setup()
 require('mason-lspconfig').setup {
   -- ensure_installed = { "sumneko_lua", "rust_analyzer", "gopls", "tsserver", "pylsp" }
-  ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "tsserver", "pylsp" }
+  ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "tsserver", "pylsp", "tailwindcss" }
 }
 require('mason-lspconfig').setup_handlers({ function(server)
   -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md

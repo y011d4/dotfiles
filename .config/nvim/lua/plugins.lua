@@ -20,10 +20,34 @@ require("lazy").setup({
   },
   --]]
   -- csv を列ごとに色をつけて表示
-  {
+  --[[ {
     "mechatroner/rainbow_csv",
     lazy = true,
     ft = "csv",
+  }, ]]
+  {
+    'cameron-wags/rainbow_csv.nvim',
+    -- config = true,
+    ft = {
+        'csv',
+        'tsv',
+        'csv_semicolon',
+        'csv_whitespace',
+        'csv_pipe',
+        'rfc_csv',
+        'rfc_semicolon'
+    },
+    cmd = {
+        'RainbowDelim',
+        'RainbowDelimSimple',
+        'RainbowDelimQuoted',
+        'RainbowMultiDelim'
+    },
+    config = function()
+      require("rainbow_csv").setup()
+      vim.keymap.set("n", "<leader>ra", "<cmd>RainbowAlign<cr>")
+      vim.keymap.set("n", "<leader>rs", "<cmd>RainbowShrink<cr>")
+    end
   },
   -- 構文解析に使う
   {
@@ -789,7 +813,7 @@ require("lazy").setup({
     lazy = true,
     keys = { "<leader>s" },
     config = function()
-      vim.keymap.set("n", "<leader>s", "<cmd>SymbolsOutline<cr>")
+      vim.keymap.set("n", "<leader>so", "<cmd>SymbolsOutline<cr>")
       require("symbols-outline").setup()
     end,
   },
@@ -826,4 +850,26 @@ require("lazy").setup({
     "alaviss/tree-sitter-nim",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({
+          -- Configuration here, or leave empty to use defaults
+      })
+    end
+  },
+  {
+    "github/copilot.vim",
+    config = function()
+      require("copilot-setting")
+    end
+  },
+  {
+    "Vigemus/iron.nvim",
+    config = function()
+      require("iron-setting")
+    end,
+  }
 })

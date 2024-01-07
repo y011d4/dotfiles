@@ -78,7 +78,6 @@ end
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 	once = true,
 	callback = function()
-		print(123345667)
 		if vim.fn.has("win32") == 1 or vim.fn.has("wsl") == 1 then
 			vim.g.clipboard = {
 				copy = {
@@ -127,7 +126,8 @@ syntax on "コードの色分け
 au BufRead,BufNewFile *.md set filetype=markdown
 au BufNewFile,BufRead *.tsx setlocal filetype=typescript.tsx
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-au BufNewFile,BufRead *.sage setlocal filetype=python.py
+"au BufNewFile,BufRead *.sage setlocal filetype=python.py
+au BufNewFile,BufRead *.sage setlocal filetype=python
 
 let g:C_Ctrl_j = 'off'
 let g:BASH_Ctrl_j = 'off'
