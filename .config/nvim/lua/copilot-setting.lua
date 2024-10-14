@@ -1,5 +1,5 @@
-vim.b.copilot_enabled = false
-vim.g.copilot_filetypes = { ["*"] = false }
+-- vim.b.copilot_enabled = false
+-- vim.g.copilot_filetypes = { ["*"] = false }
 
 -- https://zenn.dev/gentamura/articles/22ed20c9013b19
 vim.g.copilot_no_tab_map = true

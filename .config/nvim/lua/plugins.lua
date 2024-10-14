@@ -29,19 +29,19 @@ require("lazy").setup({
     'cameron-wags/rainbow_csv.nvim',
     -- config = true,
     ft = {
-        'csv',
-        'tsv',
-        'csv_semicolon',
-        'csv_whitespace',
-        'csv_pipe',
-        'rfc_csv',
-        'rfc_semicolon'
+      'csv',
+      'tsv',
+      'csv_semicolon',
+      'csv_whitespace',
+      'csv_pipe',
+      'rfc_csv',
+      'rfc_semicolon'
     },
     cmd = {
-        'RainbowDelim',
-        'RainbowDelimSimple',
-        'RainbowDelimQuoted',
-        'RainbowMultiDelim'
+      'RainbowDelim',
+      'RainbowDelimSimple',
+      'RainbowDelimQuoted',
+      'RainbowMultiDelim'
     },
     config = function()
       require("rainbow_csv").setup()
@@ -53,6 +53,7 @@ require("lazy").setup({
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    tag = "v0.9.2",
     lazy = true,
     event = "BufRead",
     -- priority = 1,
@@ -61,20 +62,20 @@ require("lazy").setup({
     end,
   },
   -- 現在のカーソル位置の関数を1行目に表示してくれる
-  {
+  --[[ {
     "nvim-treesitter/nvim-treesitter-context",
     dependencies = {
       "nvim-treesitter/nvim-treesitter",
     },
     lazy = true,
     event = "BufRead",
-  },
+  }, ]]
   -- 関数や括弧のスコープを行の最後に表示
-  {
+  --[[ {
     "haringsrob/nvim_context_vt",
     lazy = true,
     event = "VeryLazy",
-  },
+  }, ]]
   -- 使うプラグインがいるので
   {
     "kkharji/sqlite.lua",
@@ -136,16 +137,16 @@ require("lazy").setup({
   {
     "t9md/vim-quickhl",
     lazy = true,
-    keys = { "<leader>m" },
+    keys = { "<leader>h" },
     config = function()
       -- nmap <Space>m <Plug>(quickhl-manual-this)
       -- xmap <Space>m <Plug>(quickhl-manual-this)
       -- nmap <Space>M <Plug>(quickhl-manual-reset)
       -- xmap <Space>M <Plug>(quickhl-manual-reset)
-      vim.keymap.set("n", "<Space>m", "<Plug>(quickhl-manual-this)")
-      vim.keymap.set("x", "<Space>m", "<Plug>(quickhl-manual-this)")
-      vim.keymap.set("n", "<Space>M", "<Plug>(quickhl-manual-reset)")
-      vim.keymap.set("x", "<Space>M", "<Plug>(quickhl-manual-reset)")
+      vim.keymap.set("n", "<Space>h", "<Plug>(quickhl-manual-this)")
+      vim.keymap.set("x", "<Space>h", "<Plug>(quickhl-manual-this)")
+      vim.keymap.set("n", "<Space>H", "<Plug>(quickhl-manual-reset)")
+      vim.keymap.set("x", "<Space>H", "<Plug>(quickhl-manual-reset)")
     end,
   },
   -- nvim 単体で起動したときのメニュー表示
@@ -202,6 +203,13 @@ require("lazy").setup({
       require("nvim-hlslens-setting")
     end,
   },
+  -- なめらかな scroll
+  --[[ {
+    "karb94/neoscroll.nvim",
+    config = function ()
+      require('neoscroll').setup()
+    end
+  }, ]]
   -- ジャンプしやすくする
   {
     "phaazon/hop.nvim",
@@ -227,9 +235,10 @@ require("lazy").setup({
   -- file を探したり文字列検索したり
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.4",
+    tag = "0.1.6",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "debugloop/telescope-undo.nvim",
     },
     lazy = true,
     keys = { "<leader>ff", "<leader>fg", "<leader>fb", "<leader>fh", "<leader>fr" },
@@ -240,22 +249,48 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>fb", builtin.buffers, {})
       vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
       vim.keymap.set("n", "<leader>fr", builtin.resume, {})
+      vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", {})
+      -- require("telescope").load_extension("undo")
+      require("telescope").setup({
+        extensions = {
+          undo = {
+            mappings = {
+              i = {
+                -- swap <C-cr> and <cr>
+                ["<C-cr>"] = require("telescope-undo.actions").yank_additions,
+                ["<cr>"] = require("telescope-undo.actions").restore,
+              }
+            }
+          }
+        }
+      })
     end,
   },
   -- yank 結果を保存して、 fuzzy で選べるように
   {
     "AckslD/nvim-neoclip.lua",
     dependencies = {
-      "kkharji/sqlite.lua",
+      { "kkharji/sqlite.lua", module = 'sqlite' },
       "nvim-telescope/telescope.nvim",
     },
-    lazy = true,
-    keys = { "<leader>fy" },
+    -- lazy = true,
+    -- keys = { "<leader>fy" },
     config = function()
-      require("neoclip").setup()
-      vim.keymap.set("n", "<leader>fy", ":Telescope neoclip a<cr>")
+      require("neoclip").setup({
+        enable_persistent_history = true,
+        keys = {
+          telescope = {
+            i = {
+              paste = '<nop>',
+              paste_behind = '<nop>',
+            }
+          }
+        }
+      })
+      vim.keymap.set("n", "<leader>fy", ":Telescope neoclip unnamed extra=plus<cr>")
     end,
   },
+  -- telescope が検索頻度?でソートされる
   {
     "nvim-telescope/telescope-frecency.nvim",
     config = function()
@@ -369,6 +404,46 @@ require("lazy").setup({
     "onsails/lspkind.nvim",
     lazy = true,
     event = "InsertEnter",
+  },
+  -- LSP 周りの動きをリッチにしてくれる
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup({
+        symbol_in_winbar = {
+          folder_level = 1
+        },
+        definition = {
+          keys = {
+            vsplit = '<C-v>',
+            tabe = '<C-t>'
+          },
+        },
+        outline = {
+          layout = 'float',
+        },
+      })
+      -- https://zenn.dev/botamotch/articles/c02c51cff7d61d
+      vim.keymap.set("n", "gh", "<cmd>Lspsaga hover_doc<CR>")
+      -- vim.keymap.set('n', 'gr', '<cmd>Lspsaga lsp_finder<CR>')
+      vim.keymap.set('n', 'gr', vim.lsp.buf.references)
+      -- vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
+      -- https://nvimdev.github.io/lspsaga/definition/#default-keymaps
+      -- <C-c>v で vsplit できるよ
+      vim.keymap.set("n", "gd", "<cmd>Lspsaga peek_definition<CR>")
+      vim.keymap.set("n", "gt", "<cmd>Lspsaga peek_type_definition<CR>")
+      vim.keymap.set('n', 'gf', function() vim.lsp.buf.format { async = true } end)
+      vim.keymap.set("n", "ga", "<cmd>Lspsaga code_action<CR>")
+      vim.keymap.set("n", "gn", "<cmd>Lspsaga rename<CR>")
+      vim.keymap.set("n", "ge", "<cmd>Lspsaga show_line_diagnostics<CR>")
+      vim.keymap.set("n", "]e", "<cmd>Lspsaga diagnostic_jump_next<CR>")
+      vim.keymap.set("n", "[e", "<cmd>Lspsaga diagnostic_jump_prev<CR>")
+      vim.keymap.set("n", "go", "<cmd>Lspsaga outline<CR>")
+    end,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter', -- optional
+      'nvim-tree/nvim-web-devicons',     -- optional
+    }
   },
   {
     "hrsh7th/nvim-cmp",
@@ -498,7 +573,8 @@ require("lazy").setup({
   -- 'airblade/vim-gitgutter',
   -- linter や formatter のために使用
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    -- "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     -- "y011d4/null-ls.nvim",
     -- branch = "feature/add-pysen",
     dependencies = {
@@ -522,12 +598,12 @@ require("lazy").setup({
       require("gitsigns").setup({
         on_attach = function(bufnr)
           local function map(mode, lhs, rhs, opts)
-              opts = vim.tbl_extend('force', {noremap = true, silent = true}, opts or {})
-              vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
+            opts = vim.tbl_extend('force', { noremap = true, silent = true }, opts or {})
+            vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, opts)
           end
           -- Navigation
-          map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", {expr=true})
-          map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", {expr=true})
+          map('n', ']c', "&diff ? ']c' : '<cmd>Gitsigns next_hunk<CR>'", { expr = true })
+          map('n', '[c', "&diff ? '[c' : '<cmd>Gitsigns prev_hunk<CR>'", { expr = true })
         end
       })
       -- require("scrollbar.handlers.gitsigns").setup()
@@ -856,7 +932,7 @@ require("lazy").setup({
     event = "VeryLazy",
     config = function()
       require("nvim-surround").setup({
-          -- Configuration here, or leave empty to use defaults
+        -- Configuration here, or leave empty to use defaults
       })
     end
   },
@@ -866,10 +942,152 @@ require("lazy").setup({
       require("copilot-setting")
     end
   },
-  {
+  --[[ {
     "Vigemus/iron.nvim",
     config = function()
       require("iron-setting")
     end,
+  }, ]]
+  --[[ {
+    "mg979/vim-visual-multi",
+    event = "VeryLazy",
+  } ]]
+  -- multicursor を導入できる
+  {
+    "smoka7/multicursors.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      'smoka7/hydra.nvim',
+    },
+    opts = {},
+    cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+    keys = {
+      {
+        mode = { 'v', 'n' },
+        '<Leader>m',
+        '<cmd>MCstart<cr>',
+        desc = 'Create a selection for selected text or word under the cursor',
+      },
+    },
+    config = function()
+      local I = require 'multicursors.insert_mode'
+      require('multicursors').setup {
+        normal_keys = {
+          ['<C-c>'] = { method = nil, opts = { desc = 'exit' } },
+          ['<C-f>'] = { method = nil, opts = { desc = 'exit2' } },
+        },
+        --[[ insert_keys = {
+          ['<C-c>'] = { method = I.exit, opts = { desc = 'exit' } },
+          ['<C-f>'] = { method = I.exit, opts = { desc = 'exit2' } },
+        }, ]]
+        hint_config = {
+          border = 'rounded',
+          position = 'bottom',
+        },
+        --[[ generate_hints = {
+          normal = true,
+          insert = true,
+          extend = true,
+          config = {
+            column_count = 1,
+          },
+        }, ]]
+      }
+    end
+  },
+  {
+    'akinsho/toggleterm.nvim',
+    version = "*",
+    config = function()
+      require("toggleterm").setup({
+        open_mapping = [[<c-\>]],
+        direction = "float",
+      })
+      local Terminal = require("toggleterm.terminal").Terminal
+
+      local tig = Terminal:new({
+        cmd = "tig",
+        dir = "git_dir",
+        direction = "float",
+        hidden = true,
+      })
+      function _tig_toggle()
+        tig:toggle()
+      end
+
+      local k9s = Terminal:new({
+        cmd = "k9s",
+        dir = "git_dir",
+        direction = "float",
+        hidden = true,
+      })
+      function _k9s_toggle()
+        k9s:toggle()
+      end
+
+      local ipython = Terminal:new({
+        cmd = "ipython",
+        direction = "float",
+        hidden = true,
+      })
+      function _ipython_toggle()
+        ipython:toggle()
+      end
+
+      vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _tig_toggle()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>k", "<cmd>lua _k9s_toggle()<CR>", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap("n", "<leader>i", "<cmd>lua _ipython_toggle()<CR>", { noremap = true, silent = true })
+    end
+  },
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*", -- recommended, use latest release instead of latest commit
+    lazy = true,
+    keys = { "<leader>fo" },
+    -- ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("obsidian").setup({
+        workspaces = {
+          {
+            name = "personal",
+            path = "~/Documents/obsidian",
+          },
+        },
+        conceallevel = 1,
+      })
+      vim.keymap.set("n", "<leader>fo", "<cmd>ObsidianQuickSwitch<CR>")
+    end
+  },
+  {
+    'Julian/lean.nvim',
+    event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'nvim-lua/plenary.nvim',
+      -- you also will likely want nvim-cmp or some completion engine
+    },
+
+    -- see details below for full configuration options
+    opts = {
+      lsp = {
+        on_attach = on_attach,
+      },
+      mappings = true,
+    }
+  },
+  {
+    'almo7aya/openingh.nvim',
+    lazy = true,
+    cmd = {
+      "OpenInGHFile",
+      "OpenInGHFileLines",
+      "OpenInGHRepo",
+    },
+    config = function()
+    end
   }
 })

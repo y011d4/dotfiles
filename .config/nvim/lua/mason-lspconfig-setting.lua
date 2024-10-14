@@ -5,7 +5,7 @@ require("neodev").setup({
 require('mason').setup()
 require('mason-lspconfig').setup {
   -- ensure_installed = { "sumneko_lua", "rust_analyzer", "gopls", "tsserver", "pylsp" }
-  ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "tsserver", "pylsp", "tailwindcss" }
+  ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pylsp", "tailwindcss" }
 }
 require('mason-lspconfig').setup_handlers({ function(server)
   -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
@@ -20,7 +20,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
 
       -- Mappings.
       -- See `:help vim.lsp.*` for documentation on any of the below functions
-      local bufopts = { noremap = true, silent = true, buffer = bufnr }
+      --[[ local bufopts = { noremap = true, silent = true, buffer = bufnr }
       vim.keymap.set('n', 'gh', vim.lsp.buf.hover, bufopts)
       --vim.keymap.set('n', 'gf', '<cmd>lua vim.lsp.buf.format{filter=function(client) return client.name ~= "tsserver" end}<CR>')
       vim.keymap.set('n', 'gf', function() vim.lsp.buf.format { async = true } end, bufopts)
@@ -32,7 +32,7 @@ require('mason-lspconfig').setup_handlers({ function(server)
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
       vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
       vim.keymap.set('n', 'gn', vim.lsp.buf.rename, bufopts)
-      vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
+      vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts) ]]
       if server == 'pylsp' then
         -- install pylsp plugins: https://github.com/williamboman/mason-lspconfig.nvim/blob/main/lua/mason-lspconfig/server_configurations/pylsp/README.md
         -- なぜか isort は null-ls のものが動かないので、 pylsp を使う

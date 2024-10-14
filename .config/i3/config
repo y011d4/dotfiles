@@ -434,10 +434,10 @@ mode "$mode_gaps_outer" {
 set $mode_display [Ext Screen] (h) HDMI ON, (d) DP1 ON, (x) OFF [Keyboard] (k) Enabled (K) Disabled
 # set $mode_display Ext Screen (h) HDMI ON, (x) HDMI OFF, (d) HDMI same
 mode "$mode_display" {
-    bindsym h exec --no-startup-id xrandr --output HDMI1 --mode 2560x1440 --below eDP1, mode "default"
-    bindsym d exec --no-startup-id xrandr --output DP1 --mode 2560x1440 --below eDP1, mode "default"
+    bindsym h exec --no-startup-id xrandr --output HDMI-1 --mode 2560x1440 --below eDP-1, mode "default"
+    bindsym d exec --no-startup-id xrandr --output DP-1 --mode 2560x1440 --below eDP-1, mode "default"
     # bindsym d exec --no-startup-id xrandr --output HDMI1 --mode $(xrandr | grep HDMI1 -A 2 | tail -n 1 | awk '{print $1}') --same-as eDP1, mode "default"
-    bindsym x exec --no-startup-id xrandr --output HDMI1 --auto --off && xrandr --output DP1 --auto --off, mode "default"
+    bindsym x exec --no-startup-id xrandr --output HDMI-1 --auto --off && xrandr --output DP-1 --auto --off, mode "default"
     bindsym k exec --no-startup-id xinput enable $(xinput --list | grep "AT Translated" | grep -oP "id=\K\d+"), mode "default"
     bindsym Shift+k exec --no-startup-id xinput disable $(xinput --list | grep "AT Translated" | grep -oP "id=\K\d+"), mode "default"
 

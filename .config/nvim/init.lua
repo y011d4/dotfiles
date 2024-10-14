@@ -67,6 +67,8 @@ local options = {
 	swapfile = false, --swap file is not created
 	autoread = true, --vim automatically reload when saved in other action
 	list = true, --invisible character is displayed
+
+    conceallevel = 2,
 }
 
 for k, v in pairs(options) do

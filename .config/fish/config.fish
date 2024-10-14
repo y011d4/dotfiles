@@ -37,9 +37,6 @@ set -g theme_color_scheme dark
 
 fish_add_path $HOME/.pyenv/bin
 eval "$(pyenv init -)"
-if test -e $HOME/.virtualenvs/3.10.9/bin/activate.fish
-  source $HOME/.virtualenvs/3.10.9/bin/activate.fish
-end
 
 alias dotfiles="git --git-dir=$HOME/.dotfiles.git --work-tree=$HOME"
 
@@ -95,13 +92,15 @@ end
 # abbr --add nvim_edit_py --position command --regex ".+\.py" --function nvim_edit
 
 abbr --add n nvim
-
 abbr --add pwnenv "docker exec -it pwn bash"
+abbr --add curlp "curl -XPOST -H \"Content-Type: application/json\""
 
 # set -gx DOCKER_HOST "unix:///run/user/1000/docker.sock"
 fish_add_path $HOME/bin
 fish_add_path $HOME/go/bin
 fish_add_path $HOME/.dotnet/tools
+fish_add_path $HOME/.local/bin
+fish_add_path $HOME/.cargo/bin
 
 if test -e $HOME/.cargo/env
   bass source $HOME/.cargo/env
@@ -111,6 +110,23 @@ set -gx FLYCTL_INSTALL "/home/y011d4/.fly"
 fish_add_path $FLYCTL_INSTALL/bin
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/y011d4/google-cloud-sdk/path.fish.inc' ]; . '/home/y011d4/google-cloud-sdk/path.fish.inc'; end
+# if [ -f '/home/y011d4/google-cloud-sdk/path.fish.inc' ]; . '/home/y011d4/google-cloud-sdk/path.fish.inc'; end
 
 set -ga fish_user_paths /home/y011d4/.nimble/bin
+
+if test -e $HOME/.elan/env
+  source $HOME/.elan/env
+end
+
+# .envrc の内容を読み込む
+eval (direnv hook fish)
+# nodenv
+status --is-interactive; and source (nodenv init -|psub)
+# eval (nodenv init - | source)
+# fish_add_path $HOME/.nodenv/shims
+
+# if test -e $HOME/.virtualenvs/3.10.9/bin/activate.fish
+#   source $HOME/.virtualenvs/3.10.9/bin/activate.fish
+# end
+
+# source /home/y011d4/.cache/yay/google-cloud-cli/pkg/google-cloud-cli/opt/google-cloud-cli/path.fish.inc
