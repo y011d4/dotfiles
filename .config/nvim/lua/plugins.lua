@@ -235,7 +235,7 @@ require("lazy").setup({
   -- file を探したり文字列検索したり
   {
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.6",
+    -- tag = "0.1.6",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "debugloop/telescope-undo.nvim",
@@ -250,6 +250,9 @@ require("lazy").setup({
       vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
       vim.keymap.set("n", "<leader>fr", builtin.resume, {})
       vim.keymap.set("n", "<leader>fu", "<cmd>Telescope undo<cr>", {})
+      vim.keymap.set("n", "<leader>fd", builtin.diagnostics, {})
+      vim.keymap.set("n", "<leader>ft", builtin.treesitter, {})
+      vim.keymap.set("n", "<leader>f<cr>", builtin.builtin, {})
       -- require("telescope").load_extension("undo")
       require("telescope").setup({
         extensions = {
@@ -458,6 +461,7 @@ require("lazy").setup({
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "ray-x/cmp-treesitter",
+      'zbirenbaum/copilot-cmp',
     },
     lazy = true,
     event = "InsertEnter",
@@ -936,12 +940,12 @@ require("lazy").setup({
       })
     end
   },
-  {
+  --[[ {
     "github/copilot.vim",
     config = function()
       require("copilot-setting")
     end
-  },
+  }, ]]
   --[[ {
     "Vigemus/iron.nvim",
     config = function()
@@ -1088,6 +1092,25 @@ require("lazy").setup({
       "OpenInGHRepo",
     },
     config = function()
+    end
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end
+  },
+  {
+    'zbirenbaum/copilot-cmp',
+    lazy = true,
+    event = "InsertEnter",
+    config = function ()
+      require("copilot_cmp").setup()
     end
   }
 })
