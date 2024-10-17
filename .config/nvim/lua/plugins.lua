@@ -1102,6 +1102,9 @@ require("lazy").setup({
       require("copilot").setup({
         suggestion = { enabled = false },
         panel = { enabled = false },
+        filetypes = {
+          markdown = true,
+        },
       })
     end
   },
